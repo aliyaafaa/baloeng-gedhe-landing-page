@@ -1,0 +1,6 @@
+{
+  "name": "Baloeng Gedhe Convection",
+  "description": "Premium Convection and Custom Apparel Landing Page for Baloeng Gedhe UMKM",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
