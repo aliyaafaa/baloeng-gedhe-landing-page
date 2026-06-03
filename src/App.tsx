@@ -19,6 +19,8 @@ import {
   Download,
   Eye,
   MapPin,
+  Map,
+  ExternalLink,
   Phone,
   Mail,
   FileText,
@@ -84,6 +86,12 @@ const COMPANY_PROFILE_PDF_URL = "/company-profile.pdf";
 // Silakan sesuaikan nomor WA dan teks template default
 // =========================================================================
 const WHATSAPP_LINK = "https://wa.me/6288218640155";
+
+// =========================================================================
+// KONFIGURASI LINK GOOGLE MAPS & MAPS EMBED
+// =========================================================================
+const GOOGLE_MAPS_URL = "https://share.google/p4cRBcvCt0qEsuvto";
+const GOOGLE_MAPS_EMBED_URL = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.257613583489!2d109.244318!3d-7.4258908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e655c39fd1af3df%3A0xebecdeb27891be52!2sJl.%20Penatusan%2C%20Purwokerto%20Wetan%2C%20Kec.%20Purwokerto%20Tim.%2C%20Kabupaten%20Banyumas%2C%20Jawa%20Tengah%2053111!5e0!3m2!1sid!2sid!4v1717320000000!5m2!1sid!2sid";
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -173,12 +181,17 @@ export default function App() {
                 <span className="text-[#B23B22] font-bold shrink-0">✉️</span>
                 <span className="font-semibold text-slate-100 font-mono">baloenggedheindonesia@gmail.com</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-[#B23B22] font-bold shrink-0">📍</span>
-                <span className="text-slate-300 leading-normal line-clamp-2">
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 text-slate-300 hover:text-white transition-colors duration-200 group"
+              >
+                <span className="text-[#B23B22] font-bold shrink-0 transition-transform duration-200 group-hover:scale-110">📍</span>
+                <span className="leading-normal line-clamp-2 group-hover:underline">
                   Jl. Penatusan RT.03/06 Purwokerto Wetan, Banyumas, Jawa Tengah
                 </span>
-              </div>
+              </a>
             </div>
           </div>
         );
@@ -1541,10 +1554,17 @@ export default function App() {
             </h4>
             
             <div className="space-y-4 text-sm text-slate-300">
-              <div className="flex items-start space-x-3">
-                <MapPin className="h-5 w-5 text-brick shrink-0 mt-0.5" />
-                <p>Jl. Penatusan RT.03/06 Purwokerto Wetan, Banyumas, Jawa Tengah</p>
-              </div>
+              <a
+                href={GOOGLE_MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start space-x-3 text-slate-300 hover:text-brick group transition-colors duration-200"
+              >
+                <MapPin className="h-5 w-5 text-brick shrink-0 mt-0.5 transition-transform duration-200 group-hover:scale-115" />
+                <span className="underline-offset-4 group-hover:underline leading-relaxed">
+                  Jl. Penatusan RT.03/06 Purwokerto Wetan, Banyumas, Jawa Tengah
+                </span>
+              </a>
 
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-brick shrink-0" />
@@ -1575,6 +1595,46 @@ export default function App() {
                 >
                   @baloeng_gedhe_2.0
                 </a>
+              </div>
+
+              {/* Tombol Lokasi Kami, Ikon Peta & Embedded Google Maps */}
+              <div className="pt-2 space-y-4">
+                <a
+                  href={GOOGLE_MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 rounded-xl bg-brick/15 border border-brick/40 hover:bg-brick hover:border-brick px-4 py-2.5 text-xs font-bold text-white transition-all duration-300 shadow-sm hover:shadow-brick/30 group"
+                >
+                  <Map className="h-4 w-4 shrink-0 text-brick group-hover:text-white transition-transform duration-200 group-hover:scale-110" />
+                  <span>Lokasi Kami</span>
+                </a>
+
+                {/* Embedded Google Maps Frame */}
+                <div className="rounded-xl overflow-hidden border border-slate-700/60 shadow-md h-36 relative group w-full">
+                  <iframe
+                    title="Peta Alamat CV Baloeng Gedhe Indonesia"
+                    src={GOOGLE_MAPS_EMBED_URL}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen={false}
+                    loading="lazy"
+                    className="filter grayscale saturate-[0.8] contrast-[1.05] group-hover:grayscale-0 transition-all duration-300 pointer-events-none"
+                  ></iframe>
+                  {/* Click Overlay calling direct Google Maps */}
+                  <a
+                    href={GOOGLE_MAPS_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="absolute inset-0 bg-transparent hover:bg-black/10 transition-all duration-300 flex items-center justify-center cursor-pointer"
+                    title="Buka di Google Maps"
+                  >
+                    <div className="bg-slate-950/90 text-white rounded-lg px-2.5 py-1.5 text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center space-x-1.5 border border-white/20 shadow-lg">
+                      <ExternalLink className="h-3 w-3" />
+                      <span>Buka di Google Maps</span>
+                    </div>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
