@@ -11,6 +11,7 @@ import {
   MessageCircle,
   Check,
   ChevronRight,
+  ChevronLeft,
   Shirt,
   Printer,
   Layers,
@@ -36,6 +37,15 @@ import stackedBlueShirts from "./assets/images/stacked_blue_shirts_1779871380690
 import navyCargoVest from "./assets/images/navy_cargo_vest_1779871397045.png";
 import hijabLifestylePhoto from "./assets/images/hijab_lifestyle_photo_1779871425679.png";
 import raglanNavyGrey from "./assets/images/raglan_navy_grey_1779871441429.png";
+
+// Import plain and professional product images (100% no logos or emblems)
+import plainKaosCombed from "./assets/images/kaos_polos_combed_1780476586912.png";
+import plainKaosRaglan from "./assets/images/kaos_raglan_polos_1780476604048.png";
+import plainPdlPanjang from "./assets/images/pdl_polos_panjang_1780476620252.png";
+import plainPdhPendek from "./assets/images/pdh_polos_pendek_1780476641023.png";
+import plainRompiLapangan from "./assets/images/rompi_lapangan_polos_1780476660513.png";
+import plainJaketBomber from "./assets/images/jaket_bomber_polos_1780476675787.png";
+import plainPoloShirt from "./assets/images/polo_shirt_polos_1780476692780.png";
 
 // =========================================================================
 // KONFIGURASI ASSET & GAMBAR (PLACEHOLDER & LOCAL FILES)
@@ -80,6 +90,11 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [isScrolled, setIsScrolled] = useState(false);
   const [pdfPreviewOpen, setPdfPreviewOpen] = useState(false);
+  const [activePdfPage, setActivePdfPage] = useState(1);
+
+  // State untuk mengontrol filter tone warna & ukuran foto secara dinamis sesuai request user secara interaktif
+  const [imageTone, setImageTone] = useState<"vintage" | "distro" | "clean" | "raw">("vintage");
+  const [imageRatio, setImageRatio] = useState<"portrait" | "square" | "standard">("portrait");
 
   // Efek untuk memantau scroll kepala halaman (sticky header style)
   useEffect(() => {
@@ -108,57 +123,333 @@ export default function App() {
     }
   };
 
+  // Rendering Helper for the Interactive 5-Page Company Profile PDF
+  const renderPdfPage = (pageNumber: number, isFullscreen: boolean = false) => {
+    switch (pageNumber) {
+      case 1: // Sampul / Cover
+        return (
+          <div className="relative h-full flex flex-col justify-between p-5 md:p-7 bg-gradient-to-tr from-[#902A18] to-[#511308] text-white overflow-hidden rounded-2xl select-none min-h-[360px] md:min-h-[420px]">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-15 mix-blend-overlay">
+              <img src={screenPrintingSetup} alt="Screen print" className="w-full h-full object-cover" />
+            </div>
+            
+            {/* Traditional wayang ornament in background */}
+            <div className="absolute right-0 bottom-12 opacity-15 pointer-events-none">
+              <span className="text-8xl">🎭</span>
+            </div>
+
+            {/* Header / Brand */}
+            <div className="flex items-center space-x-2.5 relative z-10">
+              <div className="h-9 w-9 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-slate-200">
+                <span className="text-base font-extrabold text-[#B23B22] tracking-tighter">bg</span>
+              </div>
+              <div className="text-left font-sans">
+                <h4 className="text-xs md:text-sm font-bold leading-none tracking-wide text-white">Baloeng Gedhe</h4>
+                <p className="text-[8px] md:text-[9px] uppercase font-bold text-yellow-400 tracking-widest mt-0.5">Kaos Penginyongan</p>
+              </div>
+            </div>
+
+            {/* Central Titles */}
+            <div className="text-center my-auto py-5 relative z-10 space-y-2 md:space-y-3">
+              <div className="h-[2px] w-10 bg-white/40 mx-auto"></div>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-widest text-[#FFF] drop-shadow-md">
+                COMPANY
+                <span className="block text-lg md:text-xl font-extrabold text-amber-300 mt-1">PROFILE</span>
+              </h1>
+              <div className="h-[2px] w-10 bg-white/40 mx-auto"></div>
+              <p className="text-[11px] md:text-xs font-semibold text-slate-200 max-w-sm mx-auto leading-relaxed">
+                Solusi Produksi Seragam &amp; Konveksi Custom Berkualitas
+              </p>
+            </div>
+
+            {/* Footer Contact Details Card */}
+            <div className="relative z-10 bg-black/30 rounded-xl p-3 border border-white/10 text-left text-[10px] md:text-[11px] text-slate-200 space-y-1 shadow-inner backdrop-blur-xs">
+              <div className="flex items-center space-x-2">
+                <span className="text-[#B23B22] font-bold shrink-0">📞</span>
+                <span className="font-semibold text-white">088218640155</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[#B23B22] font-bold shrink-0">✉️</span>
+                <span className="font-semibold text-slate-100 font-mono">baloenggedheindonesia@gmail.com</span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-[#B23B22] font-bold shrink-0">📍</span>
+                <span className="text-slate-300 leading-normal line-clamp-2">
+                  Jl. Penatusan RT.03/06 Purwokerto Wetan, Banyumas, Jawa Tengah
+                </span>
+              </div>
+            </div>
+          </div>
+        );
+      
+      case 2: // Tentang Perusahaan
+        return (
+          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-[#FAF6F0] text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">01 / TENTANG KAMI</h3>
+                <span className="text-[9px] bg-[#B23B22]/10 text-[#B23B22] px-2 py-0.5 rounded font-bold font-mono">CV. BG</span>
+              </div>
+              
+              <div className="space-y-2">
+                <h4 className="text-xs md:text-sm font-extrabold text-navy tracking-tight leading-snug">
+                  Profil Resmi Baloeng Gedhe Indonesia
+                </h4>
+                <p className="text-[10.5px] md:text-xs text-slate-600 leading-relaxed font-semibold">
+                  Perusahaan konveksi kami berdiri sejak tahun <strong>2013</strong> di Purwokerto, Jawa Tengah. Berkembang pesat dengan pengalaman nyata lebih dari 10 tahun pengerjaan pakaian seragam andal.
+                </p>
+                <p className="text-[10.5px] md:text-xs text-slate-600 leading-relaxed font-medium">
+                  Kami dipercaya menangani kebutuhan seragam dinas harian (PDH), lapangan (PDL), jaket, rompi medis, jas almamater universitas, kaos acara pemilu, hingga sablon massal clothing lines.
+                </p>
+              </div>
+
+              {/* Visi & Misi */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="bg-white/90 p-2.5 rounded-xl border border-rose-900/5 space-y-0.5 shadow-sm">
+                  <h5 className="text-[9px] font-extrabold text-[#B23B22] uppercase tracking-wider">Visi Utama</h5>
+                  <p className="text-[9.5px] md:text-[10px] text-slate-700 leading-normal font-medium">
+                    Menjadi produsen konveksi armada nasional yang mengutamakan kerapihan kualitas premium &amp; ketepatan jadual kirim.
+                  </p>
+                </div>
+                <div className="bg-white/90 p-2.5 rounded-xl border border-rose-900/5 space-y-0.5 shadow-sm">
+                  <h5 className="text-[9px] font-extrabold text-[#B23B22] uppercase tracking-wider">Misi Kerja</h5>
+                  <ul className="text-[8.5px] md:text-[9.5px] text-slate-600 space-y-0.5 font-semibold list-disc pl-2.5">
+                    <li>Kualitas premium standar distro</li>
+                    <li>SOP pengerjaan zero reject</li>
+                    <li>Layanan ramah penuh solusi</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono italic">
+              Baloeng Gedhe Indonesia &bull; Membantu Sejak 2013
+            </div>
+          </div>
+        );
+
+      case 3: // Produk & Layanan
+        return (
+          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-[#FAF6F0] text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">02 / PRODUK &amp; LAYANAN</h3>
+                <span className="text-[9px] bg-brick/10 text-brick px-2 py-0.5 rounded font-bold font-mono">CATALOGUE</span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* Produk */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[10px] font-extrabold text-navy uppercase tracking-wider">8 Layanan Produksi</h4>
+                  <div className="grid grid-cols-2 gap-1 font-semibold">
+                    {[
+                      "Kaos Custom", "Seragam PDL", 
+                      "Seragam PDH", "Jaket Kelas", 
+                      "Rompi Taktis", "Wearpack Safety", 
+                      "Jersey Olahraga", "Merchandise Event"
+                    ].map((p, idx) => (
+                      <div key={idx} className="bg-white/95 px-1.5 py-0.5 rounded text-[9.5px] text-slate-700 flex items-center space-x-1 border border-slate-100">
+                        <span className="text-brick text-[6px]">●</span>
+                        <span className="truncate">{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Keunggulan */}
+                <div className="space-y-1.5">
+                  <h4 className="text-[10px] font-extrabold text-navy uppercase tracking-wider">Keunggulan Kami</h4>
+                  <div className="space-y-0.5">
+                    {[
+                      "Pengalaman Terbukti > 10 Tahun",
+                      "Bordir Komputer Kepadatan Tinggi",
+                      "Mesin Sablon Plastisol Curing",
+                      "Kapasitas Skala Besar Hingga Ribuan"
+                    ].map((adv, i) => (
+                      <div key={i} className="flex items-start space-x-1.5 text-[9px] md:text-[10px] font-semibold text-slate-600 leading-tight">
+                        <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                        <span>{adv}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Step Produksi */}
+              <div className="bg-navy rounded-xl p-2.5 text-white space-y-1">
+                <h5 className="text-[9px] font-bold text-[#B23B22] uppercase tracking-wider text-center">6 Alur Sistem Transaksi</h5>
+                <div className="grid grid-cols-6 gap-0.5 text-center text-[7px] md:text-[8px] font-bold font-mono">
+                  <div className="bg-white/10 p-1 rounded">1. KONSUL</div>
+                  <div className="bg-white/10 p-1 rounded">2. SAMPLE</div>
+                  <div className="bg-white/10 p-1 rounded">3. DEAL</div>
+                  <div className="bg-white/10 p-1 rounded">4. PROD</div>
+                  <div className="bg-white/10 p-1 rounded">5. QC RUN</div>
+                  <div className="bg-white/10 p-1 rounded">6. KIRIM</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono">
+              Bahan Eksklusif Pilihan Dapat Menyesuaikan Anggaran
+            </div>
+          </div>
+        );
+
+      case 4: // SOP
+        return (
+          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-white text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">03 / SOP PRODUKSI MASAL</h3>
+                <span className="text-[9px] bg-brick/10 text-brick px-2 py-0.5 rounded font-bold font-mono">SOP-STANDARDS</span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h4 className="text-xs md:text-sm font-extrabold text-navy tracking-tight leading-snug">
+                  10 Tahap Standard Operasional Prosedur
+                </h4>
+                <p className="text-[9.5px] text-slate-500 leading-relaxed mb-2">
+                  Protokol kerja terjadwal dan disiplin tinggi guna menghindari kesalahan jahitan.
+                </p>
+              </div>
+
+              {/* Timeline list */}
+              <div className="space-y-1.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 max-h-[160px] overflow-y-auto scrollbar-thin text-[10px]">
+                {[
+                  { tag: "P1-P2", t: "Penerimaan & Surat Order", d: "Admin mendata spesifikasi seragam & menerbitkan Invoice resmi." },
+                  { tag: "P3", t: "Surat Perintah Kerja (SPK)", d: "Buku SPK 3 rangkap disalurkan (Admin, jahit, sablon/bordir)." },
+                  { tag: "P4-P5", t: "Persiapan & Distribusi Kain", d: "Menyiapkan gulungan kain premium lalu didesain pola potong." },
+                  { tag: "P6-P7", t: "Sewing, Sablon & Bordir", d: "Pemotongan kain lanjut ke pengerjaan jahit presisi komputer." },
+                  { tag: "P8-P9", t: "Strict QC & Pengerjaan Ulang", d: "Pemeriksaan detail jahitan. Jika ada cacat langsung direparasi." },
+                  { tag: "P10", t: "Pengepakan & Pengiriman", d: "Selesai disetrika uap halus, dibungkus plastik premium siap kirim." }
+                ].map((s, idx) => (
+                  <div key={idx} className="flex items-start space-x-2 text-[9.5px]">
+                    <span className="font-mono font-extrabold bg-[#B23B22] text-white px-1 rounded text-[8px] shrink-0 mt-0.5 min-w-[32px] text-center">
+                      {s.tag}
+                    </span>
+                    <div className="leading-tight">
+                      <span className="font-bold text-navy block text-[10px]">{s.t}</span>
+                      <span className="text-slate-500 text-[9px]">{s.d}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono">
+              SOP Teruji Mengurangi Cacat Hasil Jahitan
+            </div>
+          </div>
+        );
+
+      case 5: // Pengalaman
+        return (
+          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-[#FAF6F0] text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
+            <div className="space-y-3">
+              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
+                <h3 className="text.[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">04 / MITRA PENGALAMAN LAHAN</h3>
+                <span className="text-[9px] bg-brick/10 text-brick px-2 py-0.5 rounded font-bold font-mono">EXPERIENCES</span>
+              </div>
+
+              <div className="space-y-1">
+                <h4 className="text-xs md:text-sm font-extrabold text-navy tracking-tight leading-snug">
+                  8 Instansi &amp; Lembaga yang Bekerjasama
+                </h4>
+                <div className="space-y-1 max-h-[160px] overflow-y-auto scrollbar-thin text-[9.5px]">
+                  {[
+                    "1. KPU Kabupaten Banyumas (PDH Seragam)",
+                    "2. PMI Kabupaten Banyumas (Rompi Lapangan)",
+                    "3. BPS Kab. Banyumas (Kemeja Sensus)",
+                    "4. Universitas Jenderal Soedirman (Unsoed) Purwokerto",
+                    "5. Dinporabudpar Kabupaten Banyumas (Jaket Olahraga)",
+                    "6. SMP Telkom Purwokerto (Seragam Olahraga & Jas Almamater)",
+                    "7. Universitas Nahdlatul Ulama PW (PDL Seragam KKN)",
+                    "8. Jersey Kejuaraan Daerah POPDA | Dinporapar Purbalingga"
+                  ].map((port, pidx) => (
+                    <div key={pidx} className="flex items-center space-x-1.5 text-slate-700 bg-white/70 px-2.5 py-1 rounded border border-slate-200/50">
+                      <span className="h-1.5 w-1.5 rounded-full bg-brick shrink-0"></span>
+                      <span className="font-semibold truncate">{port}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Badge visual */}
+              <div className="pt-1 text-center font-semibold">
+                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">PRODUKSI KREDIBEL DIVERIFIKASI</p>
+                <div className="flex flex-wrap gap-1 justify-center">
+                  {["KPU", "PMI", "BPS", "TELKOM", "UNSOED", "UNU"].map((n) => (
+                    <span key={n} className="px-1.5 py-0.5 bg-navy/5 border border-navy/10 text-[8px] rounded font-mono font-bold text-navy">
+                      {n}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono">
+              Berkas Administratif Lengkap Termasuk SIUP, NIB, &amp; NPWP Perusahaan
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   // Kategori & Produk Data
-  const categories = ["Semua", "Kaos", "Outer", "Seragam", "Merchandise"];
+  const categories = ["Semua", "Kaos", "Outer", "Seragam"];
 
   const products = [
     {
-      id: "kaos-custom-raglan",
-      name: "Kaos Raglan & Custom 3/4 Lengan",
+      id: "kaos-polos-combed",
+      name: "Kaos Polos Cotton Combed 30s",
       category: "Kaos",
-      desc: "Kaos custom bahan Cotton Combed premium dengan model raglan elegan kombinasi warna navy-abu, jahitan rapi serta pola cutting nyaman.",
-      img: IMAGES.katalog_kaos,
-      badge: "Desain Sporty"
+      desc: "Kaos polos lengan pendek premium berbahan 100% Cotton Combed 30s super halus dan nyaman. Polos tanpa gambar/sablon, dijahit rantai rapi berstandar premium.",
+      img: plainKaosCombed,
+      badge: "Cotton Combed"
     },
     {
-      id: "pdl-tactical-haira",
-      name: "Kemeja PDL Tactical Premium",
+      id: "kaos-raglan-polos",
+      name: "Kaos Raglan Polos Premium",
+      category: "Kaos",
+      desc: "Kaos raglan lengan 3/4 dengan perpaduan warna netral yang minimalis. Full polos tanpa sablon maupun sablon brand, memberikan kesan santai tapi rapi.",
+      img: plainKaosRaglan,
+      badge: "Raglan Polos"
+    },
+    {
+      id: "polo-shirt-polos",
+      name: "Polo Shirt Polos Klasik",
+      category: "Kaos",
+      desc: "Polo shirt polo berkerah dengan material katun pique berpori halus. Tanpa logo bordir di dada dan polos, sangat pas untuk seragam semi-formal modern.",
+      img: plainPoloShirt,
+      badge: "Polo Lacoste"
+    },
+    {
+      id: "pdl-polos-panjang",
+      name: "Kemeja PDL Polos Lengan Panjang",
       category: "Seragam",
-      desc: "Kemeja dinas lapangan/PDL bahan High Twist Drill tebal dengan saku kargo depan, jahitan dobel kuat, dan bordir nama kustom presisi.",
-      img: IMAGES.katalog_polo,
-      badge: "Best Seller"
+      desc: "Kemeja PDL (Pakaian Dinas Lapangan) polos bernuansa khaki tanpa emblem, nama, atau patch velcro. Dilengkapi dua saku kargo depan minimalis dengan kancing kokoh.",
+      img: plainPdlPanjang,
+      badge: "PDL Lapangan"
     },
     {
-      id: "pdl-scout-zeta",
-      name: "Kemeja Pramuka & Sandi Scout PDL",
+      id: "pdh-polos-pendek",
+      name: "Kemeja PDH Polos Lengan Pendek",
       category: "Seragam",
-      desc: "Seragam Pramuka / PDL taktis warna merah maroon eksklusif dengan aksen kuning, tempat badge velcro, dan jahitan dobel anti-sobek.",
-      img: IMAGES.katalog_seragam,
-      badge: "Edisi Khusus"
+      desc: "Kemeja PDH (Pakaian Dinas Harian) premium berwarna navy blue polos tanpa bordir instansi atau tanda pangkat. Serat kain halus, adem, dan rapi sepanjang hari.",
+      img: plainPdhPendek,
+      badge: "PDH Kantor"
     },
     {
-      id: "rompi-cargo-navy",
-      name: "Rompi Lapangan & Kegiatan Cargo",
+      id: "rompi-lapangan-polos",
+      name: "Rompi Lapangan Cargo Polos",
       category: "Outer",
-      desc: "Rompi taktis berbahan kanvas premium atau drill dobel furing dengan saku multifungsi, ritsleting besi kokoh, sangat cocok untuk aktivitas outdoor.",
-      img: IMAGES.katalog_tote,
-      badge: "Desain Taktis"
-    },
-    {
-      id: "kaos-instansi-gizi",
-      name: "Kaos Polo & Seragam Instansi",
-      category: "Seragam",
-      desc: "Produksi kaos polo/olahraga instansi dalam jumlah massal standar nasional, seperti kaos lipat rapi dengan emblem instansi resmi.",
-      img: IMAGES.katalog_hoodie,
-      badge: "Skala Nasional"
-    },
-    {
-      id: "sablon-manual-wayang",
-      name: "Jasa Sablon Manual Presisi Tinggi",
-      category: "Merchandise",
-      desc: "Layanan sablon manual kualitas premium menggunakan tinta plastisol tahan lama dengan detail presisi tinggi bermotif etnik nusantara.",
-      img: IMAGES.katalog_merchandise,
-      badge: "Premium Craft"
+      desc: "Rompi taktis/kegiatan lapangan berwarna navy blue polos dengan banyak saku cargo fungsional. Bebas dari logo atau identitas organisasi apa pun.",
+      img: plainRompiLapangan,
+      badge: "Rompi Cargo"
     }
   ];
 
@@ -385,59 +676,126 @@ export default function App() {
               <div className="grid grid-cols-2 gap-4">
                 
                 {/* Foto 1 - Hero Grid */}
-                <div className="group relative overflow-hidden rounded-2xl bg-slate-100 aspect-[4/5] shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg">
+                <div className={`group relative overflow-hidden rounded-2xl bg-slate-100 shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg ${
+                  imageRatio === "portrait" ? "aspect-[4/5]" : imageRatio === "square" ? "aspect-square" : "aspect-[4/4.5]"
+                }`}>
                   {/* COMMENT: Ganti URL di bawah ini di variabel IMAGES atau local file assets/images/hero_1.jpg */}
                   <img 
                     src={IMAGES.hero_grid_1} 
                     alt="Peralatan jahit sablon premium" 
                     referrerPolicy="no-referrer"
-                    className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                    className={`h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 ${
+                      imageTone === "vintage" 
+                        ? "contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                        : imageTone === "distro"
+                        ? "contrast-[1.10] saturate-[1.15] brightness-[0.94] hue-rotate-[1deg]"
+                        : imageTone === "clean"
+                        ? "contrast-[1.02] saturate-[1.02] brightness-[1.02]"
+                        : "" // raw
+                    }`}
                   />
-                  {/* Elegant warm-light vintage color tone overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-brick/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
-                  {/* Subtle inner card border highlight */}
+                  {imageTone === "vintage" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-[#B23B22]/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "distro" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/25 via-transparent to-navy/15 mix-blend-overlay pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "clean" && (
+                    <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-2xl"></div>
+                  )}
                   <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl pointer-events-none"></div>
                 </div>
 
                 {/* Foto 2 - Hero Grid */}
-                <div className="group relative overflow-hidden rounded-2xl bg-slate-100 aspect-square shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg translate-y-4 animate-pulse-subtle">
+                <div className={`group relative overflow-hidden rounded-2xl bg-slate-100 shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg translate-y-4 ${
+                  imageRatio === "portrait" ? "aspect-square" : imageRatio === "square" ? "aspect-[4/5]" : "aspect-square"
+                }`}>
                   {/* COMMENT: Ganti URL di bawah ini di variabel IMAGES atau local file assets/images/hero_2.jpg */}
                   <img 
                     src={IMAGES.hero_grid_2} 
                     alt="Proses sablon kaos custom" 
                     referrerPolicy="no-referrer"
-                    className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                    className={`h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 ${
+                      imageTone === "vintage" 
+                        ? "contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                        : imageTone === "distro"
+                        ? "contrast-[1.10] saturate-[1.15] brightness-[0.94] hue-rotate-[1deg]"
+                        : imageTone === "clean"
+                        ? "contrast-[1.02] saturate-[1.02] brightness-[1.02]"
+                        : "" // raw
+                    }`}
                   />
-                  {/* Elegant warm-light vintage color tone overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-brick/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  {imageTone === "vintage" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-[#B23B22]/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "distro" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/25 via-transparent to-navy/15 mix-blend-overlay pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "clean" && (
+                    <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-2xl"></div>
+                  )}
                   <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl pointer-events-none"></div>
                 </div>
 
                 {/* Foto 3 - Hero Grid */}
-                <div className="group relative overflow-hidden rounded-2xl bg-slate-100 aspect-square shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg -translate-y-2">
+                <div className={`group relative overflow-hidden rounded-2xl bg-slate-100 shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg -translate-y-2 ${
+                  imageRatio === "portrait" ? "aspect-square" : imageRatio === "square" ? "aspect-[4/5]" : "aspect-square"
+                }`}>
                   {/* COMMENT: Ganti URL di bawah ini di variabel IMAGES atau local file assets/images/hero_3.jpg */}
                   <img 
                     src={IMAGES.hero_grid_3} 
                     alt="Penjahit pakaian profesional" 
                     referrerPolicy="no-referrer"
-                    className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                    className={`h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 ${
+                      imageTone === "vintage" 
+                        ? "contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                        : imageTone === "distro"
+                        ? "contrast-[1.10] saturate-[1.15] brightness-[0.94] hue-rotate-[1deg]"
+                        : imageTone === "clean"
+                        ? "contrast-[1.02] saturate-[1.02] brightness-[1.02]"
+                        : "" // raw
+                    }`}
                   />
-                  {/* Elegant warm-light vintage color tone overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-brick/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  {imageTone === "vintage" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-[#B23B22]/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "distro" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/25 via-transparent to-navy/15 mix-blend-overlay pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "clean" && (
+                    <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-2xl"></div>
+                  )}
                   <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl pointer-events-none"></div>
                 </div>
 
                 {/* Foto 4 - Hero Grid */}
-                <div className="group relative overflow-hidden rounded-2xl bg-slate-100 aspect-[4/5] shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg translate-y-2">
+                <div className={`group relative overflow-hidden rounded-2xl bg-slate-100 shadow-md transition-all duration-500 hover:scale-[1.03] hover:shadow-lg translate-y-2 ${
+                  imageRatio === "portrait" ? "aspect-[4/5]" : imageRatio === "square" ? "aspect-square" : "aspect-[4/4.5]"
+                }`}>
                   {/* COMMENT: Ganti URL di bawah ini di variabel IMAGES atau local file assets/images/hero_4.jpg */}
                   <img 
                     src={IMAGES.hero_grid_4} 
                     alt="Pakaian selesai diproduksi" 
                     referrerPolicy="no-referrer"
-                    className="h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                    className={`h-full w-full object-cover object-center transition duration-500 group-hover:scale-110 ${
+                      imageTone === "vintage" 
+                        ? "contrast-[1.03] saturate-[1.05] brightness-[0.98] sepia-[0.04]"
+                        : imageTone === "distro"
+                        ? "contrast-[1.10] saturate-[1.15] brightness-[0.94] hue-rotate-[1deg]"
+                        : imageTone === "clean"
+                        ? "contrast-[1.02] saturate-[1.02] brightness-[1.02]"
+                        : "" // raw
+                    }`}
                   />
-                  {/* Elegant warm-light vintage color tone overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-brick/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  {imageTone === "vintage" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/10 via-transparent to-[#B23B22]/5 mix-blend-multiply pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "distro" && (
+                    <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/25 via-transparent to-navy/15 mix-blend-overlay pointer-events-none rounded-2xl"></div>
+                  )}
+                  {imageTone === "clean" && (
+                    <div className="absolute inset-0 bg-white/5 pointer-events-none rounded-2xl"></div>
+                  )}
                   <div className="absolute inset-0 ring-1 ring-inset ring-black/5 rounded-2xl pointer-events-none"></div>
                 </div>
 
@@ -576,7 +934,9 @@ export default function App() {
                   className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                 >
                   {/* Container Image */}
-                  <div className="relative aspect-[4/3.3] w-full overflow-hidden bg-slate-100 border-b border-slate-200/50">
+                  <div className={`relative w-full overflow-hidden bg-slate-100 border-b border-slate-200/50 transition-all duration-300 ${
+                    imageRatio === "portrait" ? "aspect-[4/3.5]" : imageRatio === "square" ? "aspect-[1/1]" : "aspect-[4/3]"
+                  }`}>
                     <span className="absolute top-3 left-3 z-10 rounded-full bg-navy/90 px-3 py-1 text-xs font-semibold tracking-wide text-white backdrop-blur-sm">
                       {p.category}
                     </span>
@@ -589,11 +949,26 @@ export default function App() {
                       src={p.img}
                       alt={p.name}
                       referrerPolicy="no-referrer"
-                      className="h-full w-full object-cover object-center transition duration-700 group-hover:scale-108 contrast-[1.02] saturate-[1.04] brightness-[0.98] sepia-[0.03]"
+                      className={`h-full w-full object-cover object-center transition duration-700 group-hover:scale-108 ${
+                        imageTone === "vintage" 
+                          ? "contrast-[1.02] saturate-[1.04] brightness-[0.98] sepia-[0.03]"
+                          : imageTone === "distro"
+                          ? "contrast-[1.10] saturate-[1.12] brightness-[0.95] hue-rotate-[1deg]"
+                          : imageTone === "clean"
+                          ? "contrast-[1.01] saturate-[1.02] brightness-[1.01]"
+                          : ""
+                      }`}
                     />
                     
-                    {/* Warm Color Tone Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/12 via-transparent to-brick/5 mix-blend-multiply pointer-events-none"></div>
+                    {imageTone === "vintage" && (
+                      <div className="absolute inset-0 bg-gradient-to-tr from-amber-900/12 via-transparent to-brick/5 mix-blend-multiply pointer-events-none"></div>
+                    )}
+                    {imageTone === "distro" && (
+                      <div className="absolute inset-0 bg-gradient-to-tr from-slate-950/20 via-transparent to-navy/10 mix-blend-overlay pointer-events-none"></div>
+                    )}
+                    {imageTone === "clean" && (
+                      <div className="absolute inset-0 bg-white/5 pointer-events-none"></div>
+                    )}
                     <div className="absolute inset-0 ring-1 ring-inset ring-black/5 pointer-events-none"></div>
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-transparent opacity-0 transition duration-300 group-hover:opacity-100 flex items-end p-4">
@@ -715,13 +1090,127 @@ export default function App() {
               <div className="p-5 rounded-2xl bg-navy text-white space-y-2 shadow-md">
                 <h4 className="font-bold text-brick text-sm uppercase tracking-wide">Komitmen Perusahaan</h4>
                 <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-                  CV. Baloeng Gedhe Indonesia siap menjadi partner terpercaya dalam memenuhi kebutuhan produksi seragam dan konveksi custom untuk perusahaan, instansi, komunitas, maupun organisasi. Kepuasan pelanggan dan kualitas produk merupakan prioritas utama dalam setiap proses produksi.
+                  CV. Baloeng Gedhe Indonesia siap menjadi partner terpercaya dalam memenuhi kebutuhan parsing seragam dan konveksi custom untuk perusahaan, instansi, komunitas, maupun organisasi. Kepuasan pelanggan dan kualitas produk merupakan prioritas utama dalam setiap proses produksi.
                 </p>
               </div>
 
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* ==================== 5B. STANDAR OPERASIONAL PROSEDUR (SOP) PRODUKSI ==================== */}
+      <section className="bg-white py-20 border-t border-b border-slate-200/60">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          
+          <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
+            <h2 className="text-xs uppercase font-extrabold tracking-widest text-brick font-mono">Alur Kerja Profesional</h2>
+            <p className="text-3xl font-extrabold text-navy sm:text-4xl tracking-tight">
+              SOP Proses Produksi Konveksi
+            </p>
+            <div className="h-1 w-20 bg-brick mx-auto rounded-full"></div>
+            <p className="text-slate-600 text-sm md:text-base">
+              Kami menerapkan Standar Operasional Prosedur yang terjadwal dan terstruktur guna memastikan kualitas pengerjaan dan kepuasan maksimal setiap pelanggan.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {[
+              {
+                id: "P1",
+                num: "01",
+                title: "Penerimaan Order",
+                desc: "Admin menerima order dari pembeli dan mencatatnya ke dalam surat order secara detail.",
+                icon: "📋"
+              },
+              {
+                id: "P2",
+                num: "02",
+                title: "Nota & Invoice",
+                desc: "Setelah order dicatat, admin akan membuatkan invoice tagihan resmi atau nota pembayaran.",
+                icon: "💳"
+              },
+              {
+                id: "P3",
+                num: "03",
+                title: "SPK Mandatori",
+                desc: "Membuat lembar kerja 3 rangkap: Lembar 1 arsip admin, lembar 2 bagian jahit, lembar 3 bagian bordir/sablon.",
+                icon: "📄"
+              },
+              {
+                id: "P4",
+                num: "04",
+                title: "Persiapan Kain",
+                desc: "Menyiapkan kain gulung berkualitas premium serta material penunjang sesuai pesanan pelanggan.",
+                icon: "🧶"
+              },
+              {
+                id: "P5",
+                num: "05",
+                title: "Alokasi Meja",
+                desc: "Mendistribusikan kain yang tersedia kepada bagian pemotongan dan jahit sesuai jumlah yang tepat.",
+                icon: "🚛"
+              },
+              {
+                id: "P6",
+                num: "06",
+                title: "Pemotongan Handal",
+                desc: "Menyesuaikan kepadatan jadwal jahit: potong kain pola sebelum sablon, atau jahit langsung jika desain standar.",
+                icon: "✂️"
+              },
+              {
+                id: "P7",
+                num: "07",
+                title: "Sablon & Bordir",
+                desc: "Proses cetak sablon manual plastisol atau bordir komputer presisi tinggi dengan kerapatan padat.",
+                icon: "🎨"
+              },
+              {
+                id: "P8",
+                num: "08",
+                title: "Quality Control",
+                desc: "Kepala bagian QC memeriksa detail jahitan secara ketat demi meminimalkan kesalahan hasil.",
+                icon: "🔍"
+              },
+              {
+                id: "P9",
+                num: "09",
+                title: "Pengerjaan Ulang",
+                desc: "Jika ada temuan cacat (reject), bagian jahit/sablon segera memperbaiki secara teliti sesuai standard.",
+                icon: "🔧"
+              },
+              {
+                id: "P10",
+                num: "10",
+                title: "Selesai & Kirim",
+                desc: "Pekerjaan selesai, produk dikemas premium, siap untuk dikirim ekspedisi atau diambil oleh customer.",
+                icon: "📦"
+              }
+            ].map((step) => (
+              <div 
+                key={step.id} 
+                className="group relative rounded-2xl border border-slate-200 bg-slate-50/50 p-6 flex flex-col justify-between hover:border-brick hover:bg-white hover:shadow-xl transition-all duration-300"
+              >
+                <div className="absolute top-4 right-4 font-mono font-extrabold text-lg text-slate-300 group-hover:text-brick/20 transition-colors">
+                  {step.id}
+                </div>
+                <div className="space-y-4">
+                  <div className="text-3xl">{step.icon}</div>
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-bold text-brick font-mono">{step.num} / STEP</span>
+                    <h4 className="font-extrabold text-navy text-sm md:text-base tracking-tight group-hover:text-brick transition-colors">
+                      {step.title}
+                    </h4>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
       </section>
 
@@ -762,75 +1251,212 @@ export default function App() {
                 {/* Tombol Interaksi */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
                   <button
-                    onClick={() => setPdfPreviewOpen(!pdfPreviewOpen)}
-                    className="cursor-pointer flex items-center justify-center space-x-2 rounded-xl bg-white/10 border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition duration-300 hover:bg-white/25 active:scale-95"
+                    onClick={() => setPdfPreviewOpen(true)}
+                    className="cursor-pointer flex items-center justify-center space-x-2 rounded-xl bg-white/10 border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition duration-300 hover:bg-white/25 active:scale-95 w-full sm:w-auto"
                   >
                     <Eye className="h-4.5 w-4.5" />
-                    <span>{pdfPreviewOpen ? "Tutup Preview" : "Lihat Company Profile"}</span>
+                    <span>Mode Layar Penuh</span>
                   </button>
-
-                  {/* COMMENT: Nama file PDF dapat disesuaikan pada konstan COMPANY_PROFILE_PDF_URL di bagian atas kode */}
-                  <a
-                    href={COMPANY_PROFILE_PDF_URL}
-                    download="balieng-gedhe-company-profile.pdf"
-                    className="flex items-center justify-center space-x-2 rounded-xl bg-brick px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:bg-brick-dark shadow-md"
-                  >
-                    <Download className="h-4.5 w-4.5" />
-                    <span>Download PDF</span>
-                  </a>
                 </div>
               </div>
 
               {/* Kolom Preview Visual */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                <div className="relative bg-slate-900 border border-slate-700/60 rounded-2xl overflow-hidden aspect-[4/3] shadow-lg flex flex-col">
+                <div className="relative bg-slate-900 border border-slate-700/60 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
                   
                   {/* Top Bar Simulated App */}
-                  <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between text-xs text-slate-300 font-mono">
+                  <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between text-xs text-slate-300 font-mono select-none">
                     <span className="flex items-center space-x-2">
-                      <span className="h-3 w-3 rounded-full bg-red-500 inline-block"></span>
-                      <span className="h-3 w-3 rounded-full bg-yellow-500 inline-block"></span>
-                      <span className="h-3 w-3 rounded-full bg-green-500 inline-block"></span>
+                      <span className="h-2.5 w-2.5 rounded-full bg-red-500 inline-block"></span>
+                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-500 inline-block"></span>
+                      <span className="h-2.5 w-2.5 rounded-full bg-green-500 inline-block"></span>
                     </span>
-                    <span className="text-[10px] md:text-xs">company-profile.pdf</span>
-                    <span className="opacity-0">dummy</span>
+                    <span className="text-[10px] md:text-xs font-semibold flex items-center space-x-1.5 text-slate-200">
+                      <FileText className="h-3.5 w-3.5 text-brick" />
+                      <span>balieng-gedhe-company-profile.pdf</span>
+                    </span>
+                    <span className="text-[9px] bg-white/10 px-1.5 py-0.5 rounded font-bold text-slate-400 font-mono">PDF Reader</span>
                   </div>
 
-                  {/* PDF Simulator / Live Preview Frame */}
-                  <div className="flex-1 bg-slate-950 p-4 relative overflow-y-auto max-h-[300px]">
+                  {/* PDF Content Area */}
+                  <div className="flex-1 bg-slate-950 p-3 md:p-4 min-h-[365px] md:min-h-[425px] flex flex-col justify-between">
                     <AnimatePresence mode="wait">
-                      {pdfPreviewOpen ? (
-                        <motion.iframe
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          src={COMPANY_PROFILE_PDF_URL}
-                          className="w-full h-full border-none rounded-lg bg-white"
-                          title="Preview PDF Company Profile"
-                        />
-                      ) : (
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          className="h-full flex flex-col items-center justify-center text-center text-slate-400 space-y-4 p-4"
-                        >
-                          <div className="p-4 bg-white/5 rounded-full text-brick">
-                            <FileText className="h-10 w-10" />
-                          </div>
-                          <div>
-                            <p className="text-sm font-semibold text-white">Live PDF Preview</p>
-                            <p className="text-xs text-slate-400 max-w-sm mt-1 mx-auto">
-                              Klik tombol &ldquo;Lihat Company Profile&rdquo; untuk membuka preview berkas asli, atau langsung download dokumen melalui tombol di sebelah kiri.
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
+                      <motion.div
+                        key={activePdfPage}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        transition={{ duration: 0.2 }}
+                        className="flex-1"
+                      >
+                        {renderPdfPage(activePdfPage, false)}
+                      </motion.div>
                     </AnimatePresence>
+                  </div>
+
+                  {/* Control Bar */}
+                  <div className="bg-[#1e293b] border-t border-slate-700/60 px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-white font-sans select-none text-xs">
+                    {/* Page switcher buttons */}
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setActivePdfPage(prev => Math.max(1, prev - 1))}
+                        disabled={activePdfPage === 1}
+                        className="p-1.5 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
+                        title="Halaman Sebelumnya"
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </button>
+                      <span className="font-mono text-xs font-extrabold text-slate-300">
+                        Halaman <span className="text-white bg-brick px-2 py-0.5 rounded font-bold ml-1 mr-1">{activePdfPage}</span> dari 5
+                      </span>
+                      <button
+                        onClick={() => setActivePdfPage(prev => Math.min(5, prev + 1))}
+                        disabled={activePdfPage === 5}
+                        className="p-1.5 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
+                        title="Halaman Selanjutnya"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    {/* Quick navigation icons/pills */}
+                    <div className="flex items-center space-x-1">
+                      {[1, 2, 3, 4, 5].map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => setActivePdfPage(page)}
+                          className={`cursor-pointer h-5 px-2 rounded text-[9.5px] font-extrabold transition-all duration-200 ${
+                            activePdfPage === page
+                              ? "bg-[#B23B22] text-white scale-110 shadow-md font-black"
+                              : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white"
+                          }`}
+                        >
+                          P{page}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
 
             </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ==================== 6B. PORTOFOLIO KLIEN & PENGALAMAN KERJA ==================== */}
+      <section className="bg-slate-50 py-20 md:py-24 border-t border-slate-200/50">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+
+          {/* Section Header */}
+          <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
+            <h2 className="text-xs uppercase font-extrabold tracking-widest text-[#B23B22] font-mono">Rekam Jejak Produksi</h2>
+            <p className="text-3xl font-extrabold text-navy sm:text-4xl tracking-tight">
+              Mitra Terpercaya &amp; Pengalaman Kerja
+            </p>
+            <div className="h-1 w-20 bg-brick mx-auto rounded-full"></div>
+            <p className="text-slate-600 text-sm md:text-base">
+              Hadir mendampingi berbagai instansi pemerintah, BUMN, organisasi medis, institusi akademik, hingga clothing line lokal dalam mewujudkan pakaian seragam berkualitas tinggi.
+            </p>
+          </div>
+
+          {/* Experience Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                client: "PMI (Palang Merah Indonesia) Kota Bandung",
+                product: "Kaos Lapangan &amp; Rompi Relawan PMI",
+                material: "Bahan High-Grade Ripstop &amp; Cotton Combed 24s",
+                badge: "Organisasi Sosial",
+                desc: "Produksi rompi lapangan dilengkapi dengan tali sabuk taktis dan reflektor cahaya (scotlite) untuk kegiatan dinas outdoor.",
+                color: "bg-red-550",
+                initials: "PMI"
+              },
+              {
+                client: "KPU (Komisi Pemilihan Umum) Kab. Sukabumi",
+                product: "Kemeja PDL Terpusat / Seragam Dinas Lapangan",
+                material: "Bahan High Quality Japan Drill (Warna Special Navy)",
+                badge: "Lembaga Negara",
+                desc: "Bordir komputer presisi tinggi di 4 titik baju, dilengkapi ventilasi jaring di punggung belakang untuk sirkulasi kerja lapangan.",
+                color: "bg-amber-600",
+                initials: "KPU"
+              },
+              {
+                client: "BPS (Badan Pusat Statistik) Kab. Garut",
+                product: "Poloshirt Kerah Acara &amp; Kemeja Gathering Instansi",
+                material: "Bahan CVC Lacoste Premium &amp; Interlock Knit Weave",
+                badge: "Instansi Pemerintah",
+                desc: "Polo shirt kombinasi warna mewah dengan rib lengan bordir eksklusif, awet meskipun dicuci berulang-ulang.",
+                color: "bg-blue-600",
+                initials: "BPS"
+              },
+              {
+                client: "Instansi Sekolah &amp; Universitas Terbuka",
+                product: "Jaket Almamater, Seragam Olahraga, &amp; Dasir Batik",
+                material: "Bahan Twist High-Class, Dri-Fit Hexagon, &amp; Fleece Cotton",
+                badge: "Sektor Pendidikan",
+                desc: "Pengerjaan kaos olahraga sekolah premium serta jas almamater berfuring satin halus yang nyaman dipakai aktivitas belajar mengajar.",
+                color: "bg-emerald-600",
+                initials: "EDU"
+              },
+              {
+                client: "Brand Distro &amp; Clothing Line Jawa Barat",
+                product: "Hoodie Heavy-Fleece &amp; T-Shirt Custom Modern",
+                material: "Bahan Heavy Cotton Fleece 330gsm &amp; Combed 30s Reaktif",
+                badge: "Clothing Line",
+                desc: "Standar penjahitan kumis (flatlock style) dengan cetakan sablon manual plastisol curing matang tahan strika suhu sedang.",
+                color: "bg-slate-800",
+                initials: "CTR"
+              },
+              {
+                client: "Ikatan Alumni &amp; Komunias Motor Regional",
+                product: "Kemeja Acara Organisasi &amp; Varsity Jacket",
+                material: "Bahan Twill Premium Serta Lengan Kulit Sintetis Oscar",
+                badge: "Komunitas Seni &amp; Hobi",
+                desc: "Pembuatan seragam kemeja berkancing snap tersembunyi dengan bordiran emblem presisi tinggi di dada dan punggung.",
+                color: "bg-indigo-650",
+                initials: "KMN"
+              }
+            ].map((exp, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between"
+              >
+                <div className="space-y-4">
+                  {/* Badge & initials row */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-extrabold text-[#B23B22] bg-brick/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      {exp.badge}
+                    </span>
+                    <div className="h-9 w-9 rounded-xl bg-navy text-white text-xs font-bold font-mono flex items-center justify-center">
+                      {exp.initials}
+                    </div>
+                  </div>
+
+                  {/* Header text */}
+                  <div>
+                    <h4 className="text-base font-extrabold text-navy tracking-tight leading-tight">
+                      {exp.client}
+                    </h4>
+                    <p className="text-xs text-brick font-semibold mt-1">
+                      {exp.product}
+                    </p>
+                  </div>
+
+                  {/* Body description */}
+                  <p className="text-xs text-slate-500 leading-relaxed">
+                    {exp.desc}
+                  </p>
+                </div>
+
+                {/* Footnotes of Material details */}
+                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                  <span className="font-mono text-slate-400">DETAIL BAHAN:</span>
+                  <span className="font-bold text-slate-700 max-w-[180px] text-right truncate" dangerouslySetInnerHTML={{ __html: exp.material }}></span>
+                </div>
+              </div>
+            ))}
           </div>
 
         </div>
@@ -961,6 +1587,129 @@ export default function App() {
           <p className="mt-1 font-medium text-slate-500">Konveksi & produksi seragam terpercaya Purwokerto, Jawa Tengah.</p>
         </div>
       </footer>
+
+      {/* Fullscreen PDF Company Profile Reader Modal */}
+      <AnimatePresence>
+        {pdfPreviewOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md"
+          >
+            {/* Close layer hit area */}
+            <div className="absolute inset-0 cursor-pointer" onClick={() => setPdfPreviewOpen(false)}></div>
+            
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="relative w-full max-w-4xl bg-slate-900 border border-slate-700/60 rounded-3xl shadow-2xl overflow-hidden flex flex-col z-10 max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="bg-slate-800 px-6 py-4 border-b border-slate-700 flex items-center justify-between select-none">
+                <div className="flex items-center space-x-3 text-white">
+                  <div className="h-9 w-9 bg-brick rounded-xl flex items-center justify-center text-xs font-bold font-mono">
+                    PDF
+                  </div>
+                  <div className="text-left font-sans">
+                    <h3 className="font-extrabold text-sm md:text-base leading-none text-white">CV. Baloeng Gedhe Indonesia</h3>
+                    <p className="text-[10px] md:text-xs text-slate-400 mt-1">Company Profile Resmi &bull; PDF Slides Reader</p>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => setPdfPreviewOpen(false)}
+                  className="cursor-pointer p-2 bg-slate-700 hover:bg-slate-650 rounded-xl text-white transition duration-150"
+                  aria-label="Tutup"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+
+              {/* PDF Content Area */}
+              <div className="flex-1 bg-[#FAF6F0] p-4 md:p-6 overflow-y-auto min-h-[300px] md:min-h-[440px] flex flex-col justify-between">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activePdfPage}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="flex-1"
+                  >
+                    {renderPdfPage(activePdfPage, true)}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Bottom Navigation Control Bar */}
+              <div className="bg-slate-800 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-700 select-none text-xs text-white pb-6">
+                {/* Previous & Next */}
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setActivePdfPage(prev => Math.max(1, prev - 1))}
+                    disabled={activePdfPage === 1}
+                    className="flex items-center space-x-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-xl hover:bg-slate-650 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    <span>Kembali</span>
+                  </button>
+                  
+                  <span className="font-mono text-sm font-extrabold text-slate-300">
+                    Halaman <span className="text-white bg-brick px-2.5 py-1 rounded-lg font-bold ml-1.5 mr-1.5">{activePdfPage}</span> dari 5
+                  </span>
+                  
+                  <button
+                    onClick={() => setActivePdfPage(prev => Math.min(5, prev + 1))}
+                    disabled={activePdfPage === 5}
+                    className="flex items-center space-x-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-xl hover:bg-slate-650 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
+                  >
+                    <span>Lanjut</span>
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+
+                {/* Tabs / Direct Jumps */}
+                <div className="flex flex-wrap gap-1.5 justify-center">
+                  {[
+                    { page: 1, label: "SAMPUL" },
+                    { page: 2, label: "ABOUT" },
+                    { page: 3, label: "PROD" },
+                    { page: 4, label: "SOP" },
+                    { page: 5, label: "PORTF" }
+                  ].map((item) => (
+                    <button
+                      key={item.page}
+                      onClick={() => setActivePdfPage(item.page)}
+                      className={`cursor-pointer px-3 py-1.5 rounded-xl text-[10px] md:text-xs font-bold transition-all duration-200 ${
+                        activePdfPage === item.page
+                          ? "bg-brick text-white shadow-md scale-105"
+                          : "bg-slate-700/60 text-slate-300 hover:bg-slate-750 hover:text-white"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Download PDF button inside modal */}
+                <div>
+                  <a
+                    href={COMPANY_PROFILE_PDF_URL}
+                    download="balieng-gedhe-company-profile.pdf"
+                    className="flex items-center space-x-1.5 rounded-xl bg-brick/20 border border-brick/40 hover:bg-brick py-2 px-4 text-xs font-bold text-white transition duration-200"
+                  >
+                    <Download className="h-4 w-4" />
+                    <span>Unduh PDF</span>
+                  </a>
+                </div>
+              </div>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
