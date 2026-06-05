@@ -438,7 +438,7 @@ export default function App() {
       category: "Kaos",
       desc: "Polo shirt polo berkerah dengan material katun pique berpori halus. Tanpa logo bordir di dada dan polos, sangat pas untuk seragam semi-formal modern.",
       img: plainPoloShirt,
-      badge: "Polo Lacoste"
+      badge: "Polo"
     },
     {
       id: "pdl-polos-panjang",
@@ -446,7 +446,7 @@ export default function App() {
       category: "Seragam",
       desc: "Kemeja PDL (Pakaian Dinas Lapangan) polos bernuansa khaki tanpa emblem, nama, atau patch velcro. Dilengkapi dua saku kargo depan minimalis dengan kancing kokoh.",
       img: plainPdlPanjang,
-      badge: "PDL Lapangan"
+      badge: "PDL"
     },
     {
       id: "pdh-polos-pendek",
@@ -1364,7 +1364,7 @@ export default function App() {
 
           {/* Section Header */}
           <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-            <h2 className="text-xs uppercase font-extrabold tracking-widest text-[#B23B22] font-mono">Rekam Jejak Produksi</h2>
+            <h2 className="text-xs uppercase font-extrabold tracking-widest text-[#B23B22] font-mono">Pengalaman Pekerjaan</h2>
             <p className="text-3xl font-extrabold text-navy sm:text-4xl tracking-tight">
               Mitra Terpercaya &amp; Pengalaman Kerja
             </p>
@@ -1378,63 +1378,81 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                client: "PMI (Palang Merah Indonesia) Kota Bandung",
-                product: "Kaos Lapangan &amp; Rompi Relawan PMI",
-                material: "Bahan High-Grade Ripstop &amp; Cotton Combed 24s",
-                badge: "Organisasi Sosial",
-                desc: "Produksi rompi lapangan dilengkapi dengan tali sabuk taktis dan reflektor cahaya (scotlite) untuk kegiatan dinas outdoor.",
-                color: "bg-red-550",
-                initials: "PMI"
-              },
-              {
-                client: "KPU (Komisi Pemilihan Umum) Kab. Sukabumi",
-                product: "Kemeja PDL Terpusat / Seragam Dinas Lapangan",
-                material: "Bahan High Quality Japan Drill (Warna Special Navy)",
+                client: "KPU Kabupaten Banyumas",
+                product: "Seragam PDH & Kaos Pendidikan Pemilu",
+                material: "Bahan High Quality Japan Drill &amp; Cotton Combed 24s",
                 badge: "Lembaga Negara",
-                desc: "Bordir komputer presisi tinggi di 4 titik baju, dilengkapi ventilasi jaring di punggung belakang untuk sirkulasi kerja lapangan.",
+                desc: "Produksi seragam dinas harian berlogo bordir komputer presisi tinggi dan kaos kampanye edukasi pemilu yang nyaman dan adem.",
                 color: "bg-amber-600",
                 initials: "KPU"
               },
               {
-                client: "BPS (Badan Pusat Statistik) Kab. Garut",
-                product: "Poloshirt Kerah Acara &amp; Kemeja Gathering Instansi",
-                material: "Bahan CVC Lacoste Premium &amp; Interlock Knit Weave",
+                client: "PMI Kabupaten Banyumas",
+                product: "Rompi Tactical",
+                material: "Bahan High-Grade Ripstop &amp; Double Mesh",
+                badge: "Organisasi Sosial",
+                desc: "Desain rompi dinas outdoor taktis multifungsi dengan saku kargo, furing jala berventilasi, dan scotlite reflektor cahaya untuk tugas kemanusiaan.",
+                color: "bg-red-650",
+                initials: "PMI"
+              },
+              {
+                client: "BPS Kabupaten Banyumas",
+                product: "Seragam PDH",
+                material: "Bahan Japan Drill Premium Super-Soft",
                 badge: "Instansi Pemerintah",
-                desc: "Polo shirt kombinasi warna mewah dengan rib lengan bordir eksklusif, awet meskipun dicuci berulang-ulang.",
-                color: "bg-blue-600",
+                desc: "Kemeja kerja dinas harian berpotongan rapi dengan detail bordir logo instansi presisi tinggi dan bahan kain handeel halus.",
+                color: "bg-blue-650",
                 initials: "BPS"
               },
               {
-                client: "Instansi Sekolah &amp; Universitas Terbuka",
-                product: "Jaket Almamater, Seragam Olahraga, &amp; Dasir Batik",
-                material: "Bahan Twist High-Class, Dri-Fit Hexagon, &amp; Fleece Cotton",
+                client: "Universitas Jenderal Soedirman Purwokerto",
+                product: "Kaos Dies Natalis",
+                material: "Bahan Cotton Combed 30s Premium Reaktif",
                 badge: "Sektor Pendidikan",
-                desc: "Pengerjaan kaos olahraga sekolah premium serta jas almamater berfuring satin halus yang nyaman dipakai aktivitas belajar mengajar.",
-                color: "bg-emerald-600",
-                initials: "EDU"
+                desc: "Kaos sablon premium uniseks Dies Natalis Universitas dengan kualitas tinta plastisol awet yang lembut dan daya rekat super.",
+                color: "bg-yellow-600",
+                initials: "UNS"
               },
               {
-                client: "Brand Distro &amp; Clothing Line Jawa Barat",
-                product: "Hoodie Heavy-Fleece &amp; T-Shirt Custom Modern",
-                material: "Bahan Heavy Cotton Fleece 330gsm &amp; Combed 30s Reaktif",
-                badge: "Clothing Line",
-                desc: "Standar penjahitan kumis (flatlock style) dengan cetakan sablon manual plastisol curing matang tahan strika suhu sedang.",
-                color: "bg-slate-800",
-                initials: "CTR"
+                client: "Dinporabudpar Kabupaten Banyumas",
+                product: "Jaket Olahraga",
+                material: "Bahan Parasut Taslan &amp; Furing High-Ventilation Drifit",
+                badge: "Instansi Pemerintah",
+                desc: "Jaket olahraga windbreaker kontingen daerah dengan kain kedap air (water-resistant), sleting waterproof, dan sirkulasi udara optimal.",
+                color: "bg-cyan-700",
+                initials: "DNP"
               },
               {
-                client: "Ikatan Alumni &amp; Komunias Motor Regional",
-                product: "Kemeja Acara Organisasi &amp; Varsity Jacket",
-                material: "Bahan Twill Premium Serta Lengan Kulit Sintetis Oscar",
-                badge: "Komunitas Seni &amp; Hobi",
-                desc: "Pembuatan seragam kemeja berkancing snap tersembunyi dengan bordiran emblem presisi tinggi di dada dan punggung.",
+                client: "SMP Telkom Purwokerto",
+                product: "Seragam Olahraga &amp; Jas Almamater Siswa",
+                material: "Bahan Dri-Fit Milano &amp; Twist High-Class",
+                badge: "Sektor Pendidikan",
+                desc: "Setelan jersey olahraga dinamis bermedium lembut dipadukan jas almamater berfuring satin halus yang sangat pas untuk kegiatan siswa.",
+                color: "bg-red-700",
+                initials: "TLK"
+              },
+              {
+                client: "Universitas Nahdlatul Ulama Purwokerto",
+                product: "Seragam PDL KKN",
+                material: "Bahan American Drill Grade A",
+                badge: "Sektor Pendidikan",
+                desc: "Pakaian dinas lapangan taktis KKN mahasiswa berpundak pangkat fleksibel dengan aksen saku kargo ganda pendukung kegiatan sosial.",
+                color: "bg-emerald-700",
+                initials: "UNU"
+              },
+              {
+                client: "Dinporapar Kabupaten Purbalingga",
+                product: "Jersey POPDA",
+                material: "Bahan Dri-Fit Benzema Ultra-Evap",
+                badge: "Instansi Pemerintah",
+                desc: "Custom jersey olahraga tim atlet daerah hasil cetakan sublim full-print berkualitas tinggi dengan sirkulasi pori evaporasi kering.",
                 color: "bg-indigo-650",
-                initials: "KMN"
+                initials: "DPP"
               }
             ].map((exp, index) => (
               <div 
                 key={index}
-                className="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between"
+                className="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   {/* Badge & initials row */}
@@ -1442,31 +1460,20 @@ export default function App() {
                     <span className="text-[10px] font-extrabold text-[#B23B22] bg-brick/10 px-2.5 py-1 rounded-full uppercase tracking-wider">
                       {exp.badge}
                     </span>
-                    <div className="h-9 w-9 rounded-xl bg-navy text-white text-xs font-bold font-mono flex items-center justify-center">
+                    <div className={`h-9 w-9 rounded-xl text-white text-xs font-bold font-mono flex items-center justify-center ${exp.color}`}>
                       {exp.initials}
                     </div>
                   </div>
 
                   {/* Header text */}
-                  <div>
+                  <div className="space-y-1.5">
                     <h4 className="text-base font-extrabold text-navy tracking-tight leading-tight">
                       {exp.client}
                     </h4>
-                    <p className="text-xs text-brick font-semibold mt-1">
+                    <p className="text-xs text-brick font-semibold">
                       {exp.product}
                     </p>
                   </div>
-
-                  {/* Body description */}
-                  <p className="text-xs text-slate-500 leading-relaxed">
-                    {exp.desc}
-                  </p>
-                </div>
-
-                {/* Footnotes of Material details */}
-                <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                  <span className="font-mono text-slate-400">DETAIL BAHAN:</span>
-                  <span className="font-bold text-slate-700 max-w-[180px] text-right truncate" dangerouslySetInnerHTML={{ __html: exp.material }}></span>
                 </div>
               </div>
             ))}
