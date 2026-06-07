@@ -233,7 +233,7 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased scroll-smooth selection:bg-brick selection:text-white overflow-x-hidden">
       
       {/* ==================== 1. STICKY NAVBAR ==================== */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
 
@@ -350,7 +350,7 @@ export default function App() {
       {/* ==================== 2. HERO SECTION ==================== */}
       <section 
         id="home" 
-        className="relative overflow-hidden bg-gradient-to-b from-slate-100 to-white pt-28 pb-20 md:pt-36 md:pb-28"
+        className="relative overflow-hidden bg-gradient-to-b from-slate-100 to-white pt-32 pb-20 md:pt-40 md:pb-28"
       >
         {/* Ornamen Latar Belakang */}
         <div className="absolute top-0 right-0 -z-10 h-96 w-96 rounded-full bg-slate-200/50 blur-3xl"></div>
