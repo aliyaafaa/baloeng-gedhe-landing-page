@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { supabase } from "./supabaseClient";
+import { supabase } from "./lib/supabase";
 import {
   Menu,
   X,
