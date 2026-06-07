@@ -94,7 +94,6 @@ export default function App() {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [isScrolled, setIsScrolled] = useState(false);
   const [pdfPreviewOpen, setPdfPreviewOpen] = useState(false);
-  const [activePdfPage, setActivePdfPage] = useState(1);
 
   // State untuk mengontrol filter tone warna & ukuran foto secara dinamis sesuai request user secara interaktif
   const [imageTone, setImageTone] = useState<"vintage" | "distro" | "clean" | "raw">("vintage");
@@ -124,287 +123,6 @@ export default function App() {
         behavior: "smooth",
       });
       setMobileMenuOpen(false);
-    }
-  };
-
-  // Rendering Helper for the Interactive 5-Page Company Profile PDF
-  const renderPdfPage = (pageNumber: number, isFullscreen: boolean = false) => {
-    switch (pageNumber) {
-      case 1: // Sampul / Cover
-        return (
-          <div className="relative h-full flex flex-col justify-between p-5 md:p-7 bg-gradient-to-tr from-[#902A18] to-[#511308] text-white overflow-hidden rounded-2xl select-none min-h-[360px] md:min-h-[420px]">
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-15 mix-blend-overlay">
-              <img src={screenPrintingSetup} alt="Screen print" className="w-full h-full object-cover" />
-            </div>
-            
-            {/* Traditional wayang ornament in background */}
-            <div className="absolute right-0 bottom-12 opacity-15 pointer-events-none">
-              <span className="text-8xl">🎭</span>
-            </div>
-
-            {/* Header / Brand */}
-            <div className="flex items-center space-x-2.5 relative z-10">
-              <div className="h-9 w-9 rounded-full bg-white flex items-center justify-center shadow-md border-2 border-slate-200">
-                <span className="text-base font-extrabold text-[#B23B22] tracking-tighter">bg</span>
-              </div>
-              <div className="text-left font-sans">
-                <h4 className="text-xs md:text-sm font-bold leading-none tracking-wide text-white">Baloeng Gedhe</h4>
-                <p className="text-[8px] md:text-[9px] uppercase font-bold text-yellow-400 tracking-widest mt-0.5">Kaos Penginyongan</p>
-              </div>
-            </div>
-
-            {/* Central Titles */}
-            <div className="text-center my-auto py-5 relative z-10 space-y-2 md:space-y-3">
-              <div className="h-[2px] w-10 bg-white/40 mx-auto"></div>
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-black uppercase tracking-widest text-[#FFF] drop-shadow-md">
-                COMPANY
-                <span className="block text-lg md:text-xl font-extrabold text-amber-300 mt-1">PROFILE</span>
-              </h1>
-              <div className="h-[2px] w-10 bg-white/40 mx-auto"></div>
-              <p className="text-[11px] md:text-xs font-semibold text-slate-200 max-w-sm mx-auto leading-relaxed">
-                Solusi Produksi Seragam &amp; Konveksi Custom Berkualitas
-              </p>
-            </div>
-
-            {/* Footer Contact Details Card */}
-            <div className="relative z-10 bg-black/30 rounded-xl p-3 border border-white/10 text-left text-[10px] md:text-[11px] text-slate-200 space-y-1 shadow-inner backdrop-blur-xs">
-              <div className="flex items-center space-x-2">
-                <span className="text-[#B23B22] font-bold shrink-0">📞</span>
-                <span className="font-semibold text-white">088218640155</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-[#B23B22] font-bold shrink-0">✉️</span>
-                <span className="font-semibold text-slate-100 font-mono">baloenggedheindonesia@gmail.com</span>
-              </div>
-              <a
-                href={GOOGLE_MAPS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-slate-300 hover:text-white transition-colors duration-200 group"
-              >
-                <span className="text-[#B23B22] font-bold shrink-0 transition-transform duration-200 group-hover:scale-110">📍</span>
-                <span className="leading-normal line-clamp-2 group-hover:underline">
-                  Jl. Penatusan RT.03/06 Purwokerto Wetan, Banyumas, Jawa Tengah
-                </span>
-              </a>
-            </div>
-          </div>
-        );
-      
-      case 2: // Tentang Perusahaan
-        return (
-          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-[#FAF6F0] text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">01 / TENTANG KAMI</h3>
-                <span className="text-[9px] bg-[#B23B22]/10 text-[#B23B22] px-2 py-0.5 rounded font-bold font-mono">CV. BG</span>
-              </div>
-              
-              <div className="space-y-2">
-                <h4 className="text-xs md:text-sm font-extrabold text-navy tracking-tight leading-snug">
-                  Profil Resmi Baloeng Gedhe Indonesia
-                </h4>
-                <p className="text-[10.5px] md:text-xs text-slate-600 leading-relaxed font-semibold">
-                  Perusahaan konveksi kami berdiri sejak tahun <strong>2013</strong> di Purwokerto, Jawa Tengah. Berkembang pesat dengan pengalaman nyata lebih dari 10 tahun pengerjaan pakaian seragam andal.
-                </p>
-                <p className="text-[10.5px] md:text-xs text-slate-600 leading-relaxed font-medium">
-                  Kami dipercaya menangani kebutuhan seragam dinas harian (PDH), lapangan (PDL), jaket, rompi medis, jas almamater universitas, kaos acara pemilu, hingga sablon massal clothing lines.
-                </p>
-              </div>
-
-              {/* Visi & Misi */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div className="bg-white/90 p-2.5 rounded-xl border border-rose-900/5 space-y-0.5 shadow-sm">
-                  <h5 className="text-[9px] font-extrabold text-[#B23B22] uppercase tracking-wider">Visi Utama</h5>
-                  <p className="text-[9.5px] md:text-[10px] text-slate-700 leading-normal font-medium">
-                    Menjadi produsen konveksi armada nasional yang mengutamakan kerapihan kualitas premium &amp; ketepatan jadual kirim.
-                  </p>
-                </div>
-                <div className="bg-white/90 p-2.5 rounded-xl border border-rose-900/5 space-y-0.5 shadow-sm">
-                  <h5 className="text-[9px] font-extrabold text-[#B23B22] uppercase tracking-wider">Misi Kerja</h5>
-                  <ul className="text-[8.5px] md:text-[9.5px] text-slate-600 space-y-0.5 font-semibold list-disc pl-2.5">
-                    <li>Kualitas premium standar distro</li>
-                    <li>SOP pengerjaan zero reject</li>
-                    <li>Layanan ramah penuh solusi</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono italic">
-              Baloeng Gedhe Indonesia &bull; Membantu Sejak 2013
-            </div>
-          </div>
-        );
-
-      case 3: // Produk & Layanan
-        return (
-          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-[#FAF6F0] text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">02 / PRODUK &amp; LAYANAN</h3>
-                <span className="text-[9px] bg-brick/10 text-brick px-2 py-0.5 rounded font-bold font-mono">CATALOGUE</span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {/* Produk */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[10px] font-extrabold text-navy uppercase tracking-wider">8 Layanan Produksi</h4>
-                  <div className="grid grid-cols-2 gap-1 font-semibold">
-                    {[
-                      "Kaos Custom", "Seragam PDL", 
-                      "Seragam PDH", "Jaket Kelas", 
-                      "Rompi Taktis", "Wearpack Safety", 
-                      "Jersey Olahraga", "Merchandise Event"
-                    ].map((p, idx) => (
-                      <div key={idx} className="bg-white/95 px-1.5 py-0.5 rounded text-[9.5px] text-slate-700 flex items-center space-x-1 border border-slate-100">
-                        <span className="text-brick text-[6px]">●</span>
-                        <span className="truncate">{p}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Keunggulan */}
-                <div className="space-y-1.5">
-                  <h4 className="text-[10px] font-extrabold text-navy uppercase tracking-wider">Keunggulan Kami</h4>
-                  <div className="space-y-0.5">
-                    {[
-                      "Pengalaman Terbukti > 10 Tahun",
-                      "Bordir Komputer Kepadatan Tinggi",
-                      "Mesin Sablon Plastisol Curing",
-                      "Kapasitas Skala Besar Hingga Ribuan"
-                    ].map((adv, i) => (
-                      <div key={i} className="flex items-start space-x-1.5 text-[9px] md:text-[10px] font-semibold text-slate-600 leading-tight">
-                        <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                        <span>{adv}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Step Produksi */}
-              <div className="bg-navy rounded-xl p-2.5 text-white space-y-1">
-                <h5 className="text-[9px] font-bold text-[#B23B22] uppercase tracking-wider text-center">6 Alur Sistem Transaksi</h5>
-                <div className="grid grid-cols-6 gap-0.5 text-center text-[7px] md:text-[8px] font-bold font-mono">
-                  <div className="bg-white/10 p-1 rounded">1. KONSUL</div>
-                  <div className="bg-white/10 p-1 rounded">2. SAMPLE</div>
-                  <div className="bg-white/10 p-1 rounded">3. DEAL</div>
-                  <div className="bg-white/10 p-1 rounded">4. PROD</div>
-                  <div className="bg-white/10 p-1 rounded">5. QC RUN</div>
-                  <div className="bg-white/10 p-1 rounded">6. KIRIM</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono">
-              Bahan Eksklusif Pilihan Dapat Menyesuaikan Anggaran
-            </div>
-          </div>
-        );
-
-      case 4: // SOP
-        return (
-          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-white text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
-                <h3 className="text-[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">03 / SOP PRODUKSI MASAL</h3>
-                <span className="text-[9px] bg-brick/10 text-brick px-2 py-0.5 rounded font-bold font-mono">SOP-STANDARDS</span>
-              </div>
-
-              <div className="space-y-1.5">
-                <h4 className="text-xs md:text-sm font-extrabold text-navy tracking-tight leading-snug">
-                  10 Tahap Standard Operasional Prosedur
-                </h4>
-                <p className="text-[9.5px] text-slate-500 leading-relaxed mb-2">
-                  Protokol kerja terjadwal dan disiplin tinggi guna menghindari kesalahan jahitan.
-                </p>
-              </div>
-
-              {/* Timeline list */}
-              <div className="space-y-1.5 bg-slate-50 p-2.5 rounded-xl border border-slate-100 max-h-[160px] overflow-y-auto scrollbar-thin text-[10px]">
-                {[
-                  { tag: "P1-P2", t: "Penerimaan & Surat Order", d: "Admin mendata spesifikasi seragam & menerbitkan Invoice resmi." },
-                  { tag: "P3", t: "Surat Perintah Kerja (SPK)", d: "Buku SPK 3 rangkap disalurkan (Admin, jahit, sablon/bordir)." },
-                  { tag: "P4-P5", t: "Persiapan & Distribusi Kain", d: "Menyiapkan gulungan kain premium lalu didesain pola potong." },
-                  { tag: "P6-P7", t: "Sewing, Sablon & Bordir", d: "Pemotongan kain lanjut ke pengerjaan jahit presisi komputer." },
-                  { tag: "P8-P9", t: "Strict QC & Pengerjaan Ulang", d: "Pemeriksaan detail jahitan. Jika ada cacat langsung direparasi." },
-                  { tag: "P10", t: "Pengepakan & Pengiriman", d: "Selesai disetrika uap halus, dibungkus plastik premium siap kirim." }
-                ].map((s, idx) => (
-                  <div key={idx} className="flex items-start space-x-2 text-[9.5px]">
-                    <span className="font-mono font-extrabold bg-[#B23B22] text-white px-1 rounded text-[8px] shrink-0 mt-0.5 min-w-[32px] text-center">
-                      {s.tag}
-                    </span>
-                    <div className="leading-tight">
-                      <span className="font-bold text-navy block text-[10px]">{s.t}</span>
-                      <span className="text-slate-500 text-[9px]">{s.d}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono">
-              SOP Teruji Mengurangi Cacat Hasil Jahitan
-            </div>
-          </div>
-        );
-
-      case 5: // Pengalaman
-        return (
-          <div className="h-full flex flex-col justify-between p-5 md:p-7 bg-[#FAF6F0] text-slate-800 overflow-y-auto rounded-2xl select-text min-h-[360px] md:min-h-[420px] scrollbar-thin">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between border-b border-rose-900/10 pb-1.5">
-                <h3 className="text.[10px] font-bold uppercase tracking-widest text-[#B23B22] font-mono">04 / MITRA PENGALAMAN LAHAN</h3>
-                <span className="text-[9px] bg-brick/10 text-brick px-2 py-0.5 rounded font-bold font-mono">EXPERIENCES</span>
-              </div>
-
-              <div className="space-y-1">
-                <h4 className="text-xs md:text-sm font-extrabold text-navy tracking-tight leading-snug">
-                  8 Instansi &amp; Lembaga yang Bekerjasama
-                </h4>
-                <div className="space-y-1 max-h-[160px] overflow-y-auto scrollbar-thin text-[9.5px]">
-                  {[
-                    "1. KPU Kabupaten Banyumas (PDH Seragam)",
-                    "2. PMI Kabupaten Banyumas (Rompi Lapangan)",
-                    "3. BPS Kab. Banyumas (Kemeja Sensus)",
-                    "4. Universitas Jenderal Soedirman (Unsoed) Purwokerto",
-                    "5. Dinporabudpar Kabupaten Banyumas (Jaket Olahraga)",
-                    "6. SMP Telkom Purwokerto (Seragam Olahraga & Jas Almamater)",
-                    "7. Universitas Nahdlatul Ulama PW (PDL Seragam KKN)",
-                    "8. Jersey Kejuaraan Daerah POPDA | Dinporapar Purbalingga"
-                  ].map((port, pidx) => (
-                    <div key={pidx} className="flex items-center space-x-1.5 text-slate-700 bg-white/70 px-2.5 py-1 rounded border border-slate-200/50">
-                      <span className="h-1.5 w-1.5 rounded-full bg-brick shrink-0"></span>
-                      <span className="font-semibold truncate">{port}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Badge visual */}
-              <div className="pt-1 text-center font-semibold">
-                <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest mb-1">PRODUKSI KREDIBEL DIVERIFIKASI</p>
-                <div className="flex flex-wrap gap-1 justify-center">
-                  {["KPU", "PMI", "BPS", "TELKOM", "UNSOED", "UNU"].map((n) => (
-                    <span key={n} className="px-1.5 py-0.5 bg-navy/5 border border-navy/10 text-[8px] rounded font-mono font-bold text-navy">
-                      {n}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-3 pt-2 border-t border-rose-900/5 text-[9px] text-slate-400 text-center font-mono">
-              Berkas Administratif Lengkap Termasuk SIUP, NIB, &amp; NPWP Perusahaan
-            </div>
-          </div>
-        );
-
-      default:
-        return null;
     }
   };
 
@@ -515,49 +233,62 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased scroll-smooth selection:bg-brick selection:text-white">
       
       {/* ==================== 1. STICKY NAVBAR ==================== */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-24">
 
-            {/* Logo + Nama */}
+            {/* Logo + Brand */}
             <a
               href="#home"
               onClick={(e) => scrollToSection(e, "home")}
-              className="flex items-center gap-4 shrink-0"
+              className="flex items-center gap-4 group shrink-0"
             >
-              {companyProfile?.logo_url && (
-                <div className="w-20 h-20 rounded-full overflow-hidden bg-white shadow-sm border">
-                  <img
-                    src={companyProfile.logo_url}
-                    alt="Baloeng Gedhe Indonesia"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
+              <div className="w-16 h-16 rounded-full overflow-hidden bg-red-600 shadow-lg shadow-red-500/20 transition-all duration-300 group-hover:scale-105 border border-red-500/25">
+                <img
+                  src={companyProfile?.logo_url}
+                  alt="Baloeng Gedhe Indonesia"
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
               <div>
-                <h1 className="text-3xl font-bold text-slate-900">
+                <h1 className="text-3xl font-extrabold bg-gradient-to-r from-slate-900 to-red-600 bg-clip-text text-transparent">
                   Baloeng Gedhe Indonesia
                 </h1>
+                <p className="text-sm text-slate-500">
+                  Konveksi & Sablon Premium
+                </p>
               </div>
             </a>
 
-            {/* Menu */}
-            <nav className="hidden md:flex items-center gap-12 whitespace-nowrap">
+            {/* Navigation */}
+            <nav className="hidden md:flex items-center gap-3 whitespace-nowrap">
               {[
-                { label: "Home", id: "home" },
-                { label: "Layanan", id: "layanan" },
-                { label: "Katalog", id: "katalog" },
-                { label: "Tentang", id: "tentang" },
-                { label: "Company Profile", id: "profile" }
-              ].map((menu) => (
+                { label: "Home", href: "home" },
+                { label: "Layanan", href: "layanan" },
+                { label: "Katalog", href: "katalog" },
+                { label: "Tentang", href: "tentang" },
+                { label: "Company Profile", href: "company-profile" },
+              ].map((item) => (
                 <a
-                  key={menu.id}
-                  href={`#${menu.id}`}
-                  onClick={(e) => scrollToSection(e, menu.id)}
-                  className="text-lg font-semibold text-slate-900 hover:text-orange-600 transition-colors whitespace-nowrap"
+                  key={item.label}
+                  href={`#${item.href}`}
+                  onClick={(e) => scrollToSection(e, item.href)}
+                  className="
+                    px-5
+                    py-3
+                    rounded-xl
+                    text-base
+                    font-semibold
+                    text-slate-700
+                    transition-all
+                    duration-300
+                    hover:bg-red-50
+                    hover:text-red-600
+                    hover:-translate-y-0.5
+                  "
                 >
-                  {menu.label}
+                  {item.label}
                 </a>
               ))}
             </nav>
@@ -588,7 +319,7 @@ export default function App() {
                   { label: "Layanan", id: "layanan" },
                   { label: "Katalog", id: "katalog" },
                   { label: "Tentang", id: "tentang" },
-                  { label: "Company Profile", id: "profile" }
+                  { label: "Company Profile", id: "company-profile" }
                 ].map((menu) => (
                   <a
                     key={menu.id}
@@ -1227,7 +958,7 @@ export default function App() {
       </section>
 
       {/* ==================== 6. COMPANY PROFILE PDF SECTION ==================== */}
-      <section id="profile" className="bg-white py-20 md:py-24">
+      <section id="company-profile" className="bg-white py-20 md:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           
           <div className="rounded-3xl bg-navy text-white p-8 md:p-12 lg:p-16 relative overflow-hidden shadow-2xl">
@@ -1235,10 +966,10 @@ export default function App() {
             <div className="absolute top-0 right-0 h-80 w-80 bg-brick/10 rounded-full blur-3xl -z-1"></div>
             <div className="absolute bottom-0 left-0 h-60 w-60 bg-white/5 rounded-full blur-2xl -z-1"></div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center relative z-10">
               
               {/* Kolom Teks Informasi */}
-              <div className="lg:col-span-6 space-y-6">
+              <div className="space-y-6">
                 <span className="inline-flex items-center space-x-1 border border-brick/40 text-brick bg-brick/10 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
                   <FileText className="h-3.5 w-3.5" />
                   <span>Kredibilitas Bisnis</span>
@@ -1261,36 +992,32 @@ export default function App() {
                 </div>
 
                 {/* Tombol Interaksi */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                <div className="flex flex-wrap gap-4 pt-2">
                   <button
                     onClick={() => setPdfPreviewOpen(true)}
-                    className="cursor-pointer flex items-center justify-center space-x-2 rounded-xl bg-white/10 border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition duration-300 hover:bg-white/25 active:scale-95 w-full sm:w-auto"
+                    className="px-6 py-4 rounded-xl bg-slate-800 text-white font-semibold transition hover:bg-slate-700 active:scale-95"
                   >
-                    <Eye className="h-4.5 w-4.5" />
-                    <span>Mode Layar Penuh</span>
+                    Mode Layar Penuh
                   </button>
-                  {COMPANY_PROFILE_PDF_URL && (
-                    <a
-                      href={COMPANY_PROFILE_PDF_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center space-x-2 rounded-xl bg-brick hover:bg-[#a12b12] px-6 py-3.5 text-sm font-semibold text-white transition duration-300 active:scale-95 w-full sm:w-auto"
-                    >
-                      <Download className="h-4.5 w-4.5" />
-                      <span>Download Company Profile</span>
-                    </a>
-                  )}
+
+                  <a
+                    href={companyProfile?.company_profile_pdf || "https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-4 rounded-xl bg-orange-600 text-white font-semibold transition hover:bg-orange-500 active:scale-95"
+                  >
+                    Download Company Profile
+                  </a>
                 </div>
               </div>
 
               {/* Kolom Preview Visual */}
-              <div className="lg:col-span-6 flex flex-col justify-center">
-                <div className="rounded-3xl overflow-hidden border">
+              <div className="flex flex-col justify-center">
+                <div className="bg-white rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.25)] border border-slate-200" style={{ overflowX: "hidden" }}>
                   <iframe
-                    src={companyProfile?.company_profile_pdf}
-                    width="100%"
-                    height="700"
+                    src={`${companyProfile?.company_profile_pdf || "https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"}#toolbar=0`}
                     title="Company Profile"
+                    className="w-full h-[900px] min-h-[900px]"
                   />
                 </div>
               </div>
@@ -1482,7 +1209,7 @@ export default function App() {
                 { label: "Layanan Kami", id: "layanan" },
                 { label: "Katalog Produk", id: "katalog" },
                 { label: "Tentang Kami", id: "tentang" },
-                { label: "Company Profile", id: "profile" }
+                { label: "Company Profile", id: "company-profile" }
               ].map((menu) => (
                 <a
                   key={menu.id}
@@ -1638,76 +1365,26 @@ export default function App() {
               </div>
 
               {/* PDF Content Area */}
-              <div className="flex-1 bg-[#FAF6F0] p-4 md:p-6 overflow-y-auto min-h-[300px] md:min-h-[440px] flex flex-col justify-between">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activePdfPage}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex-1"
-                  >
-                    {renderPdfPage(activePdfPage, true)}
-                  </motion.div>
-                </AnimatePresence>
+              <div className="flex-1 bg-white overflow-hidden min-h-[500px] md:min-h-[700px] flex flex-col">
+                <iframe
+                  src="https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"
+                  title="Company Profile"
+                  className="w-full h-full flex-1 min-h-[650px]"
+                />
               </div>
 
               {/* Bottom Navigation Control Bar */}
               <div className="bg-slate-800 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-slate-700 select-none text-xs text-white pb-6">
-                {/* Previous & Next */}
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => setActivePdfPage(prev => Math.max(1, prev - 1))}
-                    disabled={activePdfPage === 1}
-                    className="flex items-center space-x-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-xl hover:bg-slate-650 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    <span>Kembali</span>
-                  </button>
-                  
-                  <span className="font-mono text-sm font-extrabold text-slate-300">
-                    Halaman <span className="text-white bg-brick px-2.5 py-1 rounded-lg font-bold ml-1.5 mr-1.5">{activePdfPage}</span> dari 5
-                  </span>
-                  
-                  <button
-                    onClick={() => setActivePdfPage(prev => Math.min(5, prev + 1))}
-                    disabled={activePdfPage === 5}
-                    className="flex items-center space-x-1 px-3 py-2 bg-slate-700 border border-slate-600 rounded-xl hover:bg-slate-650 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
-                  >
-                    <span>Lanjut</span>
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
+                <div className="text-slate-400">
+                  Melihat dokumen asli PDF
                 </div>
-
-                {/* Tabs / Direct Jumps */}
-                <div className="flex flex-wrap gap-1.5 justify-center">
-                  {[
-                    { page: 1, label: "SAMPUL" },
-                    { page: 2, label: "ABOUT" },
-                    { page: 3, label: "PROD" },
-                    { page: 4, label: "SOP" },
-                    { page: 5, label: "PORTF" }
-                  ].map((item) => (
-                    <button
-                      key={item.page}
-                      onClick={() => setActivePdfPage(item.page)}
-                      className={`cursor-pointer px-3 py-1.5 rounded-xl text-[10px] md:text-xs font-bold transition-all duration-200 ${
-                        activePdfPage === item.page
-                          ? "bg-brick text-white shadow-md scale-105"
-                          : "bg-slate-700/60 text-slate-300 hover:bg-slate-750 hover:text-white"
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-
                 {/* Download PDF button inside modal */}
                 <div>
                   <a
                     href={COMPANY_PROFILE_PDF_URL}
                     download="baloeng-gedhe-company-profile.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center space-x-1.5 rounded-xl bg-brick/20 border border-brick/40 hover:bg-brick py-2 px-4 text-xs font-bold text-white transition duration-200"
                   >
                     <Download className="h-4 w-4" />
