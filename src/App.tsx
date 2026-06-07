@@ -493,7 +493,7 @@ export default function App() {
       const { data, error } = await supabase
         .from("company_profile")
         .select("*")
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error("Error fetching company_profile from Supabase:", error);
@@ -514,70 +514,53 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased scroll-smooth selection:bg-brick selection:text-white">
       
       {/* ==================== 1. STICKY NAVBAR ==================== */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? "bg-navy/95 text-white shadow-lg backdrop-blur-md" 
-            : "bg-transparent text-slate-900 xl:text-slate-900"
-        }`}
-      >
-        <div className="mx-auto max-w-7xl px-8">
-          <div className="grid grid-cols-3 items-center h-20">
-            <div className="justify-self-start">
-              <a
-                href="#home"
-                onClick={(e) => scrollToSection(e, "home")}
-                className="flex items-center"
-              >
-                {companyProfile?.logo_url ? (
-                  <img
-                    src={companyProfile?.logo_url}
-                    alt="Baloeng Gedhe Indonesia"
-                    className="h-12 w-auto"
-                  />
-                ) : (
-                  <span className={`text-xl font-extrabold transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy"}`}>
-                    Baloeng Gedhe
-                  </span>
-                )}
-              </a>
-            </div>
+      <header className="sticky top-0 z-50 bg-white shadow-sm">
+        <div className="mx-auto max-w-7xl px-6">
+          <div className="flex h-20 items-center justify-between md:justify-start gap-16">
+            
+            {/* Logo */}
+            <a
+              href="#home"
+              onClick={(e) => scrollToSection(e, "home")}
+              className="shrink-0"
+            >
+              {companyProfile?.logo_url && (
+                <img
+                  src={companyProfile.logo_url}
+                  alt="Baloeng Gedhe Indonesia"
+                  className="h-12 w-auto object-contain"
+                />
+              )}
+            </a>
 
-            <div className="justify-self-center">
-              <nav className="hidden md:flex items-center gap-12">
-                {[
-                  { label: "Home", id: "home" },
-                  { label: "Layanan", id: "layanan" },
-                  { label: "Katalog", id: "katalog" },
-                  { label: "Tentang", id: "tentang" },
-                  { label: "Company Profile", id: "profile" }
-                ].map((menu) => (
-                  <a
-                    key={menu.id}
-                    href={`#${menu.id}`}
-                    onClick={(e) => scrollToSection(e, menu.id)}
-                    className={`text-sm font-semibold transition hover:text-brick ${
-                      isScrolled ? "text-white" : "text-navy"
-                    }`}
-                  >
-                    {menu.label}
-                  </a>
-                ))}
-              </nav>
-            </div>
+            {/* Menu */}
+            <nav className="hidden md:flex items-center gap-8 whitespace-nowrap">
+              {[
+                { label: "Home", id: "home" },
+                { label: "Layanan", id: "layanan" },
+                { label: "Katalog", id: "katalog" },
+                { label: "Tentang", id: "tentang" },
+                { label: "Company Profile", id: "profile" }
+              ].map((menu) => (
+                <a
+                  key={menu.id}
+                  href={`#${menu.id}`}
+                  onClick={(e) => scrollToSection(e, menu.id)}
+                  className="text-sm font-semibold text-navy hover:text-brick transition whitespace-nowrap"
+                >
+                  {menu.label}
+                </a>
+              ))}
+            </nav>
 
-            <div className="justify-self-end">
-              {/* Tombol Toggle Burger Menu - Mobile */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className={`rounded-lg p-2 md:hidden transition ${
-                  isScrolled ? "text-white" : "text-navy"
-                }`}
-                aria-label="Toggle Menu"
-              >
-                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-              </button>
-            </div>
+            {/* Tombol Toggle Burger Menu - Mobile */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="rounded-lg p-2 md:hidden transition text-navy ml-auto"
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
         </div>
 
