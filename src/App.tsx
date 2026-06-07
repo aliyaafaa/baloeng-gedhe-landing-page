@@ -5,6 +5,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { supabase } from "./supabaseClient";
 import {
   Menu,
   X,
@@ -33,7 +34,7 @@ import {
 // Import local real assets generated specifically for CV. Baloeng Gedhe Indonesia
 import heroForestModels from "./assets/images/hero_forest_models_1779871287571.png";
 import screenPrintingSetup from "./assets/images/screen_printing_setup_1779871311128.png";
-import customTacticalUniform from "./assets/images/custom_tactical_uniform_1779871332727.png";
+import customTacticalUniform from "./assets/images/clean_tactical_uniform_1780817605266.png";
 import scoutUniform from "./assets/images/scout_uniform_1779871358964.png";
 import stackedBlueShirts from "./assets/images/stacked_blue_shirts_1779871380690.png";
 import navyCargoVest from "./assets/images/navy_cargo_vest_1779871397045.png";
@@ -415,56 +416,98 @@ export default function App() {
   // Kategori & Produk Data
   const categories = ["Semua", "Kaos", "Outer", "Seragam"];
 
-  const products = [
-    {
-      id: "kaos-polos-combed",
-      name: "Kaos Polos Cotton Combed 30s",
-      category: "Kaos",
-      desc: "Kaos polos lengan pendek premium berbahan 100% Cotton Combed 30s super halus dan nyaman. Polos tanpa gambar/sablon, dijahit rantai rapi berstandar premium.",
-      img: plainKaosCombed,
-      badge: "Cotton Combed"
-    },
-    {
-      id: "kaos-raglan-polos",
-      name: "Kaos Raglan Polos Premium",
-      category: "Kaos",
-      desc: "Kaos raglan lengan 3/4 dengan perpaduan warna netral yang minimalis. Full polos tanpa sablon maupun sablon brand, memberikan kesan santai tapi rapi.",
-      img: plainKaosRaglan,
-      badge: "Raglan Polos"
-    },
-    {
-      id: "polo-shirt-polos",
-      name: "Polo Shirt Polos Klasik",
-      category: "Kaos",
-      desc: "Polo shirt polo berkerah dengan material katun pique berpori halus. Tanpa logo bordir di dada dan polos, sangat pas untuk seragam semi-formal modern.",
-      img: plainPoloShirt,
-      badge: "Polo"
-    },
-    {
-      id: "pdl-polos-panjang",
-      name: "Kemeja PDL Polos Lengan Panjang",
-      category: "Seragam",
-      desc: "Kemeja PDL (Pakaian Dinas Lapangan) polos bernuansa khaki tanpa emblem, nama, atau patch velcro. Dilengkapi dua saku kargo depan minimalis dengan kancing kokoh.",
-      img: plainPdlPanjang,
-      badge: "PDL"
-    },
-    {
-      id: "pdh-polos-pendek",
-      name: "Kemeja PDH Polos Lengan Pendek",
-      category: "Seragam",
-      desc: "Kemeja PDH (Pakaian Dinas Harian) premium berwarna navy blue polos tanpa bordir instansi atau tanda pangkat. Serat kain halus, adem, dan rapi sepanjang hari.",
-      img: plainPdhPendek,
-      badge: "PDH Kantor"
-    },
-    {
-      id: "rompi-lapangan-polos",
-      name: "Rompi Lapangan Cargo Polos",
-      category: "Outer",
-      desc: "Rompi taktis/kegiatan lapangan berwarna navy blue polos dengan banyak saku cargo fungsional. Bebas dari logo atau identitas organisasi apa pun.",
-      img: plainRompiLapangan,
-      badge: "Rompi Cargo"
+  const [logo, setLogo] = useState("");
+  const [products, setProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    getProducts();
+    getLogo();
+  }, []);
+
+  async function getProducts() {
+    try {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*");
+
+      if (error) {
+        console.error("Error fetching products from Supabase:", error);
+      } else if (data && data.length > 0) {
+        setProducts(data);
+      } else {
+        // Fallback to local products so the UI remains polished and doesn't break if table/db is fresh/empty
+        setProducts([
+          {
+            id: "kaos-polos-combed",
+            name: "Kaos Polos Cotton Combed 30s",
+            category: "Kaos",
+            desc: "Kaos polos lengan pendek premium berbahan 100% Cotton Combed 30s super halus dan nyaman. Polos tanpa gambar/sablon, dijahit rantai rapi berstandar premium.",
+            image_url: plainKaosCombed,
+            badge: "Cotton Combed"
+          },
+          {
+            id: "kaos-raglan-polos",
+            name: "Kaos Raglan Polos Premium",
+            category: "Kaos",
+            desc: "Kaos raglan lengan 3/4 dengan perpaduan warna netral yang minimalis. Full polos tanpa sablon maupun sablon brand, memberikan kesan santai tapi rapi.",
+            image_url: plainKaosRaglan,
+            badge: "Raglan Polos"
+          },
+          {
+            id: "polo-shirt-polos",
+            name: "Polo Shirt Polos Klasik",
+            category: "Kaos",
+            desc: "Polo shirt polo berkerah dengan material katun pique berpori halus. Tanpa logo bordir di dada dan polos, sangat pas untuk seragam semi-formal modern.",
+            image_url: plainPoloShirt,
+            badge: "Polo"
+          },
+          {
+            id: "pdl-polos-panjang",
+            name: "Kemeja PDL Polos Lengan Panjang",
+            category: "Seragam",
+            desc: "Kemeja PDL (Pakaian Dinas Lapangan) polos bernuansa khaki tanpa emblem, nama, atau patch velcro. Dilengkapi dua saku kargo depan minimalis dengan kancing kokoh.",
+            image_url: plainPdlPanjang,
+            badge: "PDL"
+          },
+          {
+            id: "pdh-polos-pendek",
+            name: "Kemeja PDH Polos Lengan Pendek",
+            category: "Seragam",
+            desc: "Kemeja PDH (Pakaian Dinas Harian) premium berwarna navy blue polos tanpa bordir instansi atau tanda pangkat. Serat kain halus, adem, dan rapi sepanjang hari.",
+            image_url: plainPdhPendek,
+            badge: "PDH Kantor"
+          },
+          {
+            id: "rompi-lapangan-polos",
+            name: "Rompi Lapangan Cargo Polos",
+            category: "Outer",
+            desc: "Rompi taktis/kegiatan lapangan berwarna navy blue polos dengan banyak saku cargo fungsional. Bebas dari logo atau identitas organisasi apa pun.",
+            image_url: plainRompiLapangan,
+            badge: "Rompi Cargo"
+          }
+        ]);
+      }
+    } catch (err) {
+      console.error("Failed to load products:", err);
     }
-  ];
+  }
+
+  async function getLogo() {
+    try {
+      const { data, error } = await supabase
+        .from("company_profile")
+        .select("logo_url")
+        .single();
+
+      if (error) {
+        console.error("Error fetching company_profile from Supabase:", error);
+      } else if (data && data.logo_url) {
+        setLogo(data.logo_url);
+      }
+    } catch (err) {
+      console.error("Failed to load logo from Supabase:", err);
+    }
+  }
 
   // Filter produk berdasarkan kategori terpilih
   const filteredProducts = activeCategory === "Semua" 
@@ -489,41 +532,51 @@ export default function App() {
             onClick={(e) => scrollToSection(e, "home")}
             className="flex items-center space-x-3 text-2xl font-bold tracking-tight text-navy transition hover:opacity-90 animate-fade-in"
           >
-            {/* Logo Image / SVG */}
-            <svg 
-              viewBox="0 0 100 100" 
-              className="h-10 w-10 shrink-0 select-none shadow-sm rounded-full bg-[#E2231A]"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <text 
-                x="20" 
-                y="61" 
-                fontFamily="'Poppins', sans-serif" 
-                fontSize="48" 
-                fontWeight="700" 
-                fill="#FFFFFF" 
-                letterSpacing="-4"
-              >
-                b
-              </text>
-              <text 
-                x="44" 
-                y="70" 
-                fontFamily="'Poppins', sans-serif" 
-                fontSize="48" 
-                fontWeight="700" 
-                fill="#FFFFFF" 
-                letterSpacing="-4"
-              >
-                g
-              </text>
-            </svg>
-            <div className="flex items-center space-x-1">
-              <span className={`transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy"}`}>
-                Baloeng
-              </span>
-              <span className="text-brick">Gedhe</span>
-            </div>
+            {logo ? (
+              <img
+                src={logo}
+                alt="Baloeng Gedhe"
+                className="h-12 w-auto"
+              />
+            ) : (
+              <>
+                {/* Logo Image / SVG */}
+                <svg 
+                  viewBox="0 0 100 100" 
+                  className="h-10 w-10 shrink-0 select-none shadow-sm rounded-full bg-[#E2231A]"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <text 
+                    x="20" 
+                    y="61" 
+                    fontFamily="'Poppins', sans-serif" 
+                    fontSize="48" 
+                    fontWeight="700" 
+                    fill="#FFFFFF" 
+                    letterSpacing="-4"
+                  >
+                    b
+                  </text>
+                  <text 
+                    x="44" 
+                    y="70" 
+                    fontFamily="'Poppins', sans-serif" 
+                    fontSize="48" 
+                    fontWeight="700" 
+                    fill="#FFFFFF" 
+                    letterSpacing="-4"
+                  >
+                    g
+                  </text>
+                </svg>
+                <div className="flex items-center space-x-1">
+                  <span className={`transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy"}`}>
+                    Baloeng
+                  </span>
+                  <span className="text-brick">Gedhe</span>
+                </div>
+              </>
+            )}
           </a>
 
           {/* Navigasi Desktop */}
@@ -959,7 +1012,7 @@ export default function App() {
                     
                     {/* COMMENT: Ganti URL di bawah ini di variabel IMAGES atau local file assets/images/ nama produk.jpg */}
                     <img
-                      src={p.img}
+                      src={p.image_url}
                       alt={p.name}
                       referrerPolicy="no-referrer"
                       className={`h-full w-full object-cover object-center transition duration-700 group-hover:scale-108 ${
