@@ -414,6 +414,7 @@ export default function App() {
   const [companyProfile, setCompanyProfile] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
   const COMPANY_PROFILE_PDF_URL = companyProfile?.company_profile_pdf;
+  console.log(companyProfile?.company_profile_pdf);
 
   useEffect(() => {
     getProducts();
@@ -514,27 +515,35 @@ export default function App() {
     <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased scroll-smooth selection:bg-brick selection:text-white">
       
       {/* ==================== 1. STICKY NAVBAR ==================== */}
-      <header className="sticky top-0 z-50 bg-white shadow-sm">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="flex h-20 items-center justify-between md:justify-start gap-16">
-            
-            {/* Logo */}
+      <header className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex items-center justify-between h-24">
+
+            {/* Logo + Nama */}
             <a
               href="#home"
               onClick={(e) => scrollToSection(e, "home")}
-              className="shrink-0"
+              className="flex items-center gap-4 shrink-0"
             >
               {companyProfile?.logo_url && (
-                <img
-                  src={companyProfile.logo_url}
-                  alt="Baloeng Gedhe Indonesia"
-                  className="h-12 w-auto object-contain"
-                />
+                <div className="w-20 h-20 rounded-full overflow-hidden bg-white shadow-sm border">
+                  <img
+                    src={companyProfile.logo_url}
+                    alt="Baloeng Gedhe Indonesia"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               )}
+
+              <div>
+                <h1 className="text-3xl font-bold text-slate-900">
+                  Baloeng Gedhe Indonesia
+                </h1>
+              </div>
             </a>
 
             {/* Menu */}
-            <nav className="hidden md:flex items-center gap-8 whitespace-nowrap">
+            <nav className="hidden md:flex items-center gap-12 whitespace-nowrap">
               {[
                 { label: "Home", id: "home" },
                 { label: "Layanan", id: "layanan" },
@@ -546,7 +555,7 @@ export default function App() {
                   key={menu.id}
                   href={`#${menu.id}`}
                   onClick={(e) => scrollToSection(e, menu.id)}
-                  className="text-sm font-semibold text-navy hover:text-brick transition whitespace-nowrap"
+                  className="text-lg font-semibold text-slate-900 hover:text-orange-600 transition-colors whitespace-nowrap"
                 >
                   {menu.label}
                 </a>
@@ -1276,80 +1285,13 @@ export default function App() {
 
               {/* Kolom Preview Visual */}
               <div className="lg:col-span-6 flex flex-col justify-center">
-                <div className="relative bg-slate-900 border border-slate-700/60 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
-                  
-                  {/* Top Bar Simulated App */}
-                  <div className="bg-slate-800 px-4 py-3 border-b border-slate-700 flex items-center justify-between text-xs text-slate-300 font-mono select-none">
-                    <span className="flex items-center space-x-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-red-500 inline-block"></span>
-                      <span className="h-2.5 w-2.5 rounded-full bg-yellow-500 inline-block"></span>
-                      <span className="h-2.5 w-2.5 rounded-full bg-green-500 inline-block"></span>
-                    </span>
-                    <span className="text-[10px] md:text-xs font-semibold flex items-center space-x-1.5 text-slate-200">
-                      <FileText className="h-3.5 w-3.5 text-brick" />
-                      <span>baloeng-gedhe-company-profile.pdf</span>
-                    </span>
-                    <span className="text-[9px] bg-white/10 px-1.5 py-0.5 rounded font-bold text-slate-400 font-mono">PDF Reader</span>
-                  </div>
-
-                  {/* PDF Content Area */}
-                  <div className="flex-1 bg-slate-950 p-3 md:p-4 min-h-[365px] md:min-h-[425px] flex flex-col justify-between">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={activePdfPage}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.2 }}
-                        className="flex-1"
-                      >
-                        {renderPdfPage(activePdfPage, false)}
-                      </motion.div>
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Control Bar */}
-                  <div className="bg-[#1e293b] border-t border-slate-700/60 px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-white font-sans select-none text-xs">
-                    {/* Page switcher buttons */}
-                    <div className="flex items-center space-x-2">
-                      <button
-                        onClick={() => setActivePdfPage(prev => Math.max(1, prev - 1))}
-                        disabled={activePdfPage === 1}
-                        className="p-1.5 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
-                        title="Halaman Sebelumnya"
-                      >
-                        <ChevronLeft className="h-4 w-4" />
-                      </button>
-                      <span className="font-mono text-xs font-extrabold text-slate-300">
-                        Halaman <span className="text-white bg-brick px-2 py-0.5 rounded font-bold ml-1 mr-1">{activePdfPage}</span> dari 5
-                      </span>
-                      <button
-                        onClick={() => setActivePdfPage(prev => Math.min(5, prev + 1))}
-                        disabled={activePdfPage === 5}
-                        className="p-1.5 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition duration-150"
-                        title="Halaman Selanjutnya"
-                      >
-                        <ChevronRight className="h-4 w-4" />
-                      </button>
-                    </div>
-
-                    {/* Quick navigation icons/pills */}
-                    <div className="flex items-center space-x-1">
-                      {[1, 2, 3, 4, 5].map((page) => (
-                        <button
-                          key={page}
-                          onClick={() => setActivePdfPage(page)}
-                          className={`cursor-pointer h-5 px-2 rounded text-[9.5px] font-extrabold transition-all duration-200 ${
-                            activePdfPage === page
-                              ? "bg-[#B23B22] text-white scale-110 shadow-md font-black"
-                              : "bg-slate-800 text-slate-400 hover:bg-slate-700 hover:text-white"
-                          }`}
-                        >
-                          P{page}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                <div className="rounded-3xl overflow-hidden border">
+                  <iframe
+                    src={companyProfile?.company_profile_pdf}
+                    width="100%"
+                    height="700"
+                    title="Company Profile"
+                  />
                 </div>
               </div>
 
