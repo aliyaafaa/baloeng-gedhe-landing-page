@@ -230,32 +230,32 @@ export default function App() {
     : products.filter(p => p.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased scroll-smooth selection:bg-brick selection:text-white">
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 antialiased scroll-smooth selection:bg-brick selection:text-white overflow-x-hidden">
       
       {/* ==================== 1. STICKY NAVBAR ==================== */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-24">
+      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
 
             {/* Logo + Brand */}
             <a
               href="#home"
               onClick={(e) => scrollToSection(e, "home")}
-              className="flex items-center gap-4 group shrink-0"
+              className="flex items-center gap-3 group shrink-0"
             >
-              <div className="w-16 h-16 rounded-full overflow-hidden bg-red-600 shadow-lg shadow-red-500/20 transition-all duration-300 group-hover:scale-105 border border-red-500/25">
+              <div className="w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden bg-red-600 shadow-lg shadow-red-500/20 transition-all duration-300 group-hover:scale-105 border border-red-500/25 flex items-center justify-center">
                 <img
-                  src={companyProfile?.logo_url}
+                  src={companyProfile?.logo_url || "https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"}
                   alt="Baloeng Gedhe Indonesia"
-                  className="w-full h-full object-cover"
+                  className="w-12 h-12 md:w-16 md:h-16 rounded-full object-cover"
                 />
               </div>
 
               <div>
-                <h1 className="text-3xl font-extrabold bg-gradient-to-r from-slate-900 to-red-600 bg-clip-text text-transparent">
+                <h1 className="text-base sm:text-xl lg:text-3xl font-bold text-slate-900">
                   Baloeng Gedhe Indonesia
                 </h1>
-                <p className="text-sm text-slate-500">
+                <p className="hidden sm:block text-sm text-slate-500">
                   Konveksi & Sablon Premium
                 </p>
               </div>
@@ -356,17 +356,17 @@ export default function App() {
         <div className="absolute top-0 right-0 -z-10 h-96 w-96 rounded-full bg-slate-200/50 blur-3xl"></div>
         <div className="absolute -bottom-20 -left-20 -z-10 h-80 w-80 rounded-full bg-brick/5 blur-3xl"></div>
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             
             {/* Teks Hero - Kolom Kiri */}
-            <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <div className="space-y-6 text-center lg:text-left">
               <div className="inline-flex items-center space-x-1.5 rounded-full bg-brick/10 px-4 py-1.5 text-sm font-semibold tracking-wide text-brick uppercase">
                 <Sparkles className="h-4 w-4" />
                 <span>Konveksi & Sablon Premium Purwokerto</span>
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight text-navy sm:text-5xl md:text-6xl xl:leading-[1.1]">
-                Produksi Kaos & Seragam untuk <span className="text-brick">Brand & Komunitas</span>
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight text-navy tracking-tight">
+                Produksi Kaos & Seragam untuk <span className="text-brick font-extrabold">Brand & Komunitas</span>
               </h1>
               <p className="mx-auto lg:mx-0 max-w-2xl text-lg text-slate-600 sm:text-xl">
                 Wujudkan pakaian berkualitas terbaik bersama <strong className="text-navy font-semibold">CV. Baloeng Gedhe Indonesia</strong>. Kami melayani jasa konveksi, sablon, bordir, dan produksi custom apparel berstandar kualitas distro dengan bahan nyaman, presisi, dan pengerjaan tepat waktu.
@@ -411,7 +411,7 @@ export default function App() {
             </div>
 
             {/* Grid 4 Foto - Kolom Kanan */}
-            <div className="lg:col-span-5 relative mt-6 lg:mt-0">
+            <div className="relative mt-6 lg:mt-0">
               {/* Backing Card Ornaments */}
               <div className="absolute -inset-4 rounded-3xl bg-slate-100 -rotate-3 -z-10"></div>
               
@@ -562,7 +562,7 @@ export default function App() {
 
       {/* ==================== 3. LAYANAN KAMI ==================== */}
       <section id="layanan" className="bg-slate-50 py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
           <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
@@ -636,7 +636,7 @@ export default function App() {
 
       {/* ==================== 4. KATALOG PRODUK ==================== */}
       <section id="katalog" className="bg-white py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Section Header */}
           <div className="text-center space-y-4 max-w-3xl mx-auto mb-12">
@@ -664,7 +664,13 @@ export default function App() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            lg:grid-cols-3
+            gap-6
+          ">
             <AnimatePresence mode="popLayout">
               {filteredProducts.map((p) => (
                 <motion.div
@@ -750,7 +756,7 @@ export default function App() {
 
       {/* ==================== 5. TENTANG BALOENG GEDHE ==================== */}
       <section id="tentang" className="bg-slate-100 py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center">
             
             {/* Bagian Kiri - Ilustrasi Gambar */}
@@ -845,7 +851,7 @@ export default function App() {
 
       {/* ==================== 5B. STANDAR OPERASIONAL PROSEDUR (SOP) PRODUKSI ==================== */}
       <section className="bg-white py-20 border-t border-b border-slate-200/60">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
             <h2 className="text-xs uppercase font-extrabold tracking-widest text-brick font-mono">Alur Kerja Profesional</h2>
@@ -958,79 +964,104 @@ export default function App() {
       </section>
 
       {/* ==================== 6. COMPANY PROFILE PDF SECTION ==================== */}
-      <section id="company-profile" className="bg-white py-20 md:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          
-          <div className="rounded-3xl bg-navy text-white p-8 md:p-12 lg:p-16 relative overflow-hidden shadow-2xl">
-            {/* Background elements */}
-            <div className="absolute top-0 right-0 h-80 w-80 bg-brick/10 rounded-full blur-3xl -z-1"></div>
-            <div className="absolute bottom-0 left-0 h-60 w-60 bg-white/5 rounded-full blur-2xl -z-1"></div>
+      <section
+        id="company-profile"
+        className="py-24 bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-[#00142F] to-[#021D42] rounded-[32px] p-10 lg:p-14">
 
-            <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-12 items-center relative z-10">
-              
-              {/* Kolom Teks Informasi */}
-              <div className="space-y-6">
-                <span className="inline-flex items-center space-x-1 border border-brick/40 text-brick bg-brick/10 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
-                  <FileText className="h-3.5 w-3.5" />
-                  <span>Kredibilitas Bisnis</span>
-                </span>
-                
-                <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl text-white">
-                  Unduh Company Profile Baloeng Gedhe
+            <div className="
+              grid
+              grid-cols-1
+              lg:grid-cols-[1fr_0.9fr]
+              gap-10
+              items-center
+            ">
+
+              {/* Kiri */}
+              <div>
+                <div className="inline-flex items-center px-4 py-2 rounded-full border border-[#C34A2C] text-[#C34A2C] text-sm font-semibold mb-8">
+                  📄 KREDIBILITAS BISNIS
+                </div>
+
+                <h2 className="text-5xl font-bold text-white leading-tight mb-6">
+                  Unduh Company Profile
+                  <br />
+                  Baloeng Gedhe
                 </h2>
-                
-                <p className="text-slate-300 text-sm md:text-base leading-relaxed">
-                  Kami mengerti pentingnya legalitas dan rincian kerja sama konveksi. Di dokumen Company Profile ini, Anda dapat menemukan portofolio terlengkap kami, daftar legalitas usaha kami, opsi bahan konveksi secara detail, daftar harga, serta syarat tata cara pemesanan.
+
+                <p className="text-slate-300 text-lg leading-relaxed mb-8">
+                  Kami mengerti pentingnya legalitas dan rincian kerja sama
+                  konveksi. Di dokumen Company Profile ini, Anda dapat
+                  menemukan portofolio terlengkap kami, daftar legalitas
+                  usaha kami, opsi bahan konveksi secara detail,
+                  daftar harga, serta syarat tata cara pemesanan.
                 </p>
 
-                {/* Info File Alert */}
-                <div className="p-4 bg-navy-light rounded-xl border border-slate-700/60 flex items-center space-x-3 text-xs text-slate-300">
-                  <Clock className="h-5 w-5 text-brick shrink-0" />
-                  <span>
-                    Dokumen terbaru diperbarui untuk tahun berjalan. Anda bisa melihat preview ringkasan atau langsung mengunduh PDF resminya.
-                  </span>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 mb-8">
+                  <p className="text-slate-300 text-sm">
+                    Dokumen terbaru diperbarui untuk tahun berjalan.
+                    Anda bisa melihat preview ringkasan atau langsung
+                    mengunduh PDF resminya.
+                  </p>
                 </div>
 
-                {/* Tombol Interaksi */}
-                <div className="flex flex-wrap gap-4 pt-2">
-                  <button
-                    onClick={() => setPdfPreviewOpen(true)}
-                    className="px-6 py-4 rounded-xl bg-slate-800 text-white font-semibold transition hover:bg-slate-700 active:scale-95"
-                  >
-                    Mode Layar Penuh
-                  </button>
-
-                  <a
-                    href={companyProfile?.company_profile_pdf || "https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-4 rounded-xl bg-orange-600 text-white font-semibold transition hover:bg-orange-500 active:scale-95"
-                  >
-                    Download Company Profile
-                  </a>
-                </div>
+                <a
+                  href={companyProfile?.company_profile_pdf || "https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex
+                    items-center
+                    gap-3
+                    px-7
+                    py-4
+                    rounded-2xl
+                    bg-[#C34A2C]
+                    hover:bg-[#A53F24]
+                    text-white
+                    font-semibold
+                    transition-all
+                    duration-300
+                  "
+                >
+                  ⬇ Download Company Profile
+                </a>
               </div>
 
-              {/* Kolom Preview Visual */}
-              <div className="flex flex-col justify-center">
-                <div className="bg-white rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.25)] border border-slate-200" style={{ overflowX: "hidden" }}>
+              {/* Kanan */}
+              <div className="flex justify-center">
+                <div
+                  className="
+                  w-full
+                  max-w-[500px]
+                  h-[500px]
+                  sm:h-[650px]
+                  lg:h-[700px]
+                  rounded-[28px]
+                  overflow-hidden
+                  shadow-[0_25px_60px_rgba(0,0,0,0.45)]
+                  border
+                  border-white/10
+                  "
+                >
                   <iframe
                     src={`${companyProfile?.company_profile_pdf || "https://kqejmeecpnqyltfkpefr.supabase.co/storage/v1/object/public/pdf/Company%20Profile%20Baloeng%20Gedhe.pdf"}#toolbar=0`}
                     title="Company Profile"
-                    className="w-full h-[900px] min-h-[900px]"
+                    className="w-full h-full bg-white"
                   />
                 </div>
               </div>
 
             </div>
           </div>
-
         </div>
       </section>
 
       {/* ==================== 6B. PORTOFOLIO KLIEN & PENGALAMAN KERJA ==================== */}
       <section className="bg-slate-50 py-20 md:py-24 border-t border-slate-200/50">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Section Header */}
           <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
@@ -1185,7 +1216,7 @@ export default function App() {
 
       {/* ==================== 8. FOOTER ==================== */}
       <footer id="kontak" className="bg-navy text-white pt-16 pb-8 border-t border-slate-800">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-10">
           
           {/* Kolom 1 - Deskripsi Brand */}
           <div className="md:col-span-5 space-y-5">
@@ -1319,7 +1350,7 @@ export default function App() {
         </div>
 
         {/* Hak Cipta Bawah */}
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 text-center text-xs text-slate-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 text-center text-xs text-slate-400">
           <p>© {new Date().getFullYear()} CV. Baloeng Gedhe Indonesia. Seluruh Hak Cipta Dilindungi.</p>
           <p className="mt-1 font-medium text-slate-500">Konveksi & produksi seragam terpercaya Purwokerto, Jawa Tengah.</p>
         </div>
