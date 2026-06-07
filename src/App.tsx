@@ -77,11 +77,6 @@ const IMAGES = {
 };
 
 // =========================================================================
-// KONFIGURASI FILE PDF COMPANY PROFILE
-// Ganti path "company-profile.pdf" jika file Anda memiliki nama yang berbeda
-// =========================================================================
-const COMPANY_PROFILE_PDF_URL = "/company-profile.pdf";
-
 // =========================================================================
 // KONFIGURASI LINK WHATSAPP
 // Silakan sesuaikan nomor WA dan teks template default
@@ -416,12 +411,13 @@ export default function App() {
   // Kategori & Produk Data
   const categories = ["Semua", "Kaos", "Outer", "Seragam"];
 
-  const [logo, setLogo] = useState("");
+  const [companyProfile, setCompanyProfile] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
+  const COMPANY_PROFILE_PDF_URL = companyProfile?.company_profile_pdf;
 
   useEffect(() => {
     getProducts();
-    getLogo();
+    loadCompanyProfile();
   }, []);
 
   async function getProducts() {
@@ -492,20 +488,20 @@ export default function App() {
     }
   }
 
-  async function getLogo() {
+  async function loadCompanyProfile() {
     try {
       const { data, error } = await supabase
         .from("company_profile")
-        .select("logo_url")
+        .select("*")
         .single();
 
       if (error) {
         console.error("Error fetching company_profile from Supabase:", error);
-      } else if (data && data.logo_url) {
-        setLogo(data.logo_url);
+      } else if (data) {
+        setCompanyProfile(data);
       }
     } catch (err) {
-      console.error("Failed to load logo from Supabase:", err);
+      console.error("Failed to load company profile from Supabase:", err);
     }
   }
 
@@ -521,110 +517,68 @@ export default function App() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled 
-            ? "bg-navy/95 text-white shadow-lg backdrop-blur-md py-4" 
-            : "bg-transparent text-slate-900 xl:text-slate-900 py-6"
+            ? "bg-navy/95 text-white shadow-lg backdrop-blur-md" 
+            : "bg-transparent text-slate-900 xl:text-slate-900"
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8">
-          {/* Logo Brand */}
-          <a 
-            href="#home" 
-            onClick={(e) => scrollToSection(e, "home")}
-            className="flex items-center space-x-3 text-2xl font-bold tracking-tight text-navy transition hover:opacity-90 animate-fade-in"
-          >
-            {logo ? (
-              <img
-                src={logo}
-                alt="Baloeng Gedhe"
-                className="h-12 w-auto"
-              />
-            ) : (
-              <>
-                {/* Logo Image / SVG */}
-                <svg 
-                  viewBox="0 0 100 100" 
-                  className="h-10 w-10 shrink-0 select-none shadow-sm rounded-full bg-[#E2231A]"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <text 
-                    x="20" 
-                    y="61" 
-                    fontFamily="'Poppins', sans-serif" 
-                    fontSize="48" 
-                    fontWeight="700" 
-                    fill="#FFFFFF" 
-                    letterSpacing="-4"
-                  >
-                    b
-                  </text>
-                  <text 
-                    x="44" 
-                    y="70" 
-                    fontFamily="'Poppins', sans-serif" 
-                    fontSize="48" 
-                    fontWeight="700" 
-                    fill="#FFFFFF" 
-                    letterSpacing="-4"
-                  >
-                    g
-                  </text>
-                </svg>
-                <div className="flex items-center space-x-1">
-                  <span className={`transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy"}`}>
-                    Baloeng
-                  </span>
-                  <span className="text-brick">Gedhe</span>
-                </div>
-              </>
-            )}
-          </a>
-
-          {/* Navigasi Desktop */}
-          <nav className="hidden items-center space-x-8 md:flex">
-            {[
-              { label: "Home", id: "home" },
-              { label: "Layanan", id: "layanan" },
-              { label: "Katalog", id: "katalog" },
-              { label: "Tentang", id: "tentang" },
-              { label: "Company Profile", id: "profile" }
-            ].map((menu) => (
+        <div className="mx-auto max-w-7xl px-8">
+          <div className="grid grid-cols-3 items-center h-20">
+            <div className="justify-self-start">
               <a
-                key={menu.id}
-                href={`#${menu.id}`}
-                onClick={(e) => scrollToSection(e, menu.id)}
-                className={`text-sm font-medium tracking-wide transition-colors relative py-1 hover:text-brick group ${
-                  isScrolled ? "text-slate-200" : "text-navy-light"
-                }`}
+                href="#home"
+                onClick={(e) => scrollToSection(e, "home")}
+                className="flex items-center"
               >
-                {menu.label}
-                <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-brick transition-all duration-300 group-hover:w-full"></span>
+                {companyProfile?.logo_url ? (
+                  <img
+                    src={companyProfile?.logo_url}
+                    alt="Baloeng Gedhe Indonesia"
+                    className="h-12 w-auto"
+                  />
+                ) : (
+                  <span className={`text-xl font-extrabold transition-colors duration-300 ${isScrolled ? "text-white" : "text-navy"}`}>
+                    Baloeng Gedhe
+                  </span>
+                )}
               </a>
-            ))}
-          </nav>
+            </div>
 
-          {/* Tombol CTA Hubungi WA - Desktop */}
-          <div className="hidden md:block">
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              referrerPolicy="no-referrer"
-              className="flex items-center space-x-2 rounded-full bg-brick px-6 py-2.5 text-sm font-medium text-white shadow-md transition-all duration-300 hover:scale-105 hover:bg-brick-dark hover:shadow-xl active:scale-95"
-            >
-              <MessageCircle className="h-4.5 w-4.5 fill-current" />
-              <span>Hubungi WA</span>
-            </a>
+            <div className="justify-self-center">
+              <nav className="hidden md:flex items-center gap-12">
+                {[
+                  { label: "Home", id: "home" },
+                  { label: "Layanan", id: "layanan" },
+                  { label: "Katalog", id: "katalog" },
+                  { label: "Tentang", id: "tentang" },
+                  { label: "Company Profile", id: "profile" }
+                ].map((menu) => (
+                  <a
+                    key={menu.id}
+                    href={`#${menu.id}`}
+                    onClick={(e) => scrollToSection(e, menu.id)}
+                    className={`text-sm font-semibold transition hover:text-brick ${
+                      isScrolled ? "text-white" : "text-navy"
+                    }`}
+                  >
+                    {menu.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            <div className="justify-self-end">
+              {/* Tombol Toggle Burger Menu - Mobile */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className={`rounded-lg p-2 md:hidden transition ${
+                  isScrolled ? "text-white" : "text-navy"
+                }`}
+                aria-label="Toggle Menu"
+              >
+                {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
-
-          {/* Tombol Toggle Burger Menu - Mobile */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className={`rounded-lg p-2 md:hidden transition ${
-              isScrolled ? "text-white" : "text-navy"
-            }`}
-            aria-label="Toggle Menu"
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
         </div>
 
         {/* Menu Navigasi Mobile (Drawer) */}
@@ -1323,6 +1277,17 @@ export default function App() {
                     <Eye className="h-4.5 w-4.5" />
                     <span>Mode Layar Penuh</span>
                   </button>
+                  {COMPANY_PROFILE_PDF_URL && (
+                    <a
+                      href={COMPANY_PROFILE_PDF_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center space-x-2 rounded-xl bg-brick hover:bg-[#a12b12] px-6 py-3.5 text-sm font-semibold text-white transition duration-300 active:scale-95 w-full sm:w-auto"
+                    >
+                      <Download className="h-4.5 w-4.5" />
+                      <span>Download Company Profile</span>
+                    </a>
+                  )}
                 </div>
               </div>
 
@@ -1339,7 +1304,7 @@ export default function App() {
                     </span>
                     <span className="text-[10px] md:text-xs font-semibold flex items-center space-x-1.5 text-slate-200">
                       <FileText className="h-3.5 w-3.5 text-brick" />
-                      <span>balieng-gedhe-company-profile.pdf</span>
+                      <span>baloeng-gedhe-company-profile.pdf</span>
                     </span>
                     <span className="text-[9px] bg-white/10 px-1.5 py-0.5 rounded font-bold text-slate-400 font-mono">PDF Reader</span>
                   </div>
@@ -1817,7 +1782,7 @@ export default function App() {
                 <div>
                   <a
                     href={COMPANY_PROFILE_PDF_URL}
-                    download="balieng-gedhe-company-profile.pdf"
+                    download="baloeng-gedhe-company-profile.pdf"
                     className="flex items-center space-x-1.5 rounded-xl bg-brick/20 border border-brick/40 hover:bg-brick py-2 px-4 text-xs font-bold text-white transition duration-200"
                   >
                     <Download className="h-4 w-4" />
